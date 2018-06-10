@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DapperMan
+namespace DapperMan.MsSql
 {
-    public class Class1
+    class FunctionQuery
     {
     }
 }
