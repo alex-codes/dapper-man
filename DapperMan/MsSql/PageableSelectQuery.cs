@@ -72,7 +72,7 @@ namespace DapperMan.MsSql
             string sql = this.defaultQueryTemplate
                 .Replace("{source}", Source)
                 .Replace("{filter}", string.IsNullOrWhiteSpace(filter) ? "" : "WHERE " + filter)
-                .Replace("{sort}", string.IsNullOrWhiteSpace(sort) ? "" : "WHERE " + sort)
+                .Replace("{sort}", string.IsNullOrWhiteSpace(sort) ? "" : "ORDER BY " + sort)
                 .Replace("{offset}", offset.ToString())
                 .Replace("{pageSize}", pageSize.ToString());
 
