@@ -4,13 +4,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Caching;
 
 namespace DapperMan.Core
 {
     public static class ReflectionHelper
     {
-        public static string GetIdentityField<T>(ObjectCache propertyCache) where T : class
+        public static string GetIdentityField<T>(PropertyCache propertyCache) where T : class
         {
             Type type = typeof(T);
             string cacheKey = $"{type.FullName}_key";
@@ -21,21 +20,18 @@ namespace DapperMan.Core
             PropertyInfo[] props = null;
             MetadataTypeAttribute metaType = null;
 
-            if (propertyCache != null)
+            if (propertyCache?.Cache != null)
             {
-                if (propertyCache.Contains(cacheKey))
+                if (propertyCache.Cache.Contains(cacheKey))
                 {
-                    return propertyCache.Get(cacheKey) as string;
+                    return propertyCache.Cache.Get(cacheKey) as string;
                 }
-                else if (propertyCache.Contains(metaPropsCacheKey) && propertyCache.Contains(propsCacheKey))
+                else if (propertyCache.Cache.Contains(metaPropsCacheKey) && propertyCache.Cache.Contains(propsCacheKey))
                 {
-                    metadataProps = propertyCache.Get(metaPropsCacheKey) as PropertyInfo[];
-                    props = propertyCache.Get(propsCacheKey) as PropertyInfo[];
+                    metadataProps = propertyCache.Cache.Get(metaPropsCacheKey) as PropertyInfo[];
+                    props = propertyCache.Cache.Get(propsCacheKey) as PropertyInfo[];
                 }
             }
-
-            var policy = new CacheItemPolicy();
-            policy.SlidingExpiration = TimeSpan.FromMinutes(15);
 
             if (metadataProps == null || props == null)
             {
@@ -52,8 +48,8 @@ namespace DapperMan.Core
 
                 if (propertyCache != null)
                 {
-                    propertyCache.Set(metaPropsCacheKey, metadataProps, policy);
-                    propertyCache.Set(propsCacheKey, props, policy);
+                    propertyCache.Cache.Set(metaPropsCacheKey, metadataProps, propertyCache.Policy);
+                    propertyCache.Cache.Set(propsCacheKey, props, propertyCache.Policy);
                 }
             }
 
@@ -100,7 +96,7 @@ namespace DapperMan.Core
 
             if (propertyCache != null)
             {
-                propertyCache.Set(cacheKey, keyName, policy);
+                propertyCache.Cache.Set(cacheKey, keyName, propertyCache.Policy);
             }
 
             return null;
@@ -124,16 +120,16 @@ namespace DapperMan.Core
         }
 
         // http://stackoverflow.com/a/6949037/1087945 and http://stackoverflow.com/a/6201859/1087945 for retrieving the metadata attributes
-        public static string[] ReflectProperties<T>(ObjectCache propertyCache, Type[] ignoreAttributes) where T : class
+        public static string[] ReflectProperties<T>(PropertyCache propertyCache, Type[] ignoreAttributes) where T : class
         {
             Type type = typeof(T);
             string cacheKey = $"{type.FullName}_propNames";
 
             if (propertyCache != null)
             {
-                if (propertyCache.Contains(cacheKey))
+                if (propertyCache.Cache.Contains(cacheKey))
                 {
-                    return propertyCache.Get(cacheKey) as string[];
+                    return propertyCache.Cache.Get(cacheKey) as string[];
                 }
             }
 
@@ -168,12 +164,9 @@ namespace DapperMan.Core
 
             if (propertyCache != null)
             {
-                var policy = new CacheItemPolicy();
-                policy.SlidingExpiration = TimeSpan.FromMinutes(15);
-
-                propertyCache.Set(cacheKey, properties.ToArray(), policy);
-                propertyCache.Set(metaPropsCacheKey, metadataProps, policy);
-                propertyCache.Set(propsCacheKey, props, policy);
+                propertyCache.Cache.Set(cacheKey, properties.ToArray(), propertyCache.Policy);
+                propertyCache.Cache.Set(metaPropsCacheKey, metadataProps, propertyCache.Policy);
+                propertyCache.Cache.Set(propsCacheKey, props, propertyCache.Policy);
             }
 
             return properties.ToArray();

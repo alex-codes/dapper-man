@@ -39,7 +39,7 @@ namespace DapperMan.MsSql
             Source = source;
         }
 
-        public int Execute<T>(object queryParameters = null, ObjectCache propertyCache = null, IDbTransaction transaction = null) where T : class
+        public int Execute<T>(object queryParameters = null, PropertyCache propertyCache = null, IDbTransaction transaction = null) where T : class
         {
             ReflectType<T>(propertyCache);
 
@@ -53,7 +53,7 @@ namespace DapperMan.MsSql
             }
         }
 
-        public async Task<int> ExecuteAsync<T>(object queryParameters = null, ObjectCache propertyCache = null, IDbTransaction transaction = null) where T : class
+        public async Task<int> ExecuteAsync<T>(object queryParameters = null, PropertyCache propertyCache = null, IDbTransaction transaction = null) where T : class
         {
             ReflectType<T>(propertyCache);
 
@@ -95,7 +95,7 @@ namespace DapperMan.MsSql
             return sql;
         }
 
-        private void ReflectType<T>(ObjectCache propertyCache) where T : class
+        private void ReflectType<T>(PropertyCache propertyCache) where T : class
         {
             propNames = ReflectionHelper.ReflectProperties<T>(propertyCache, new[] { typeof(IdentityAttribute), typeof(InsertIgnoreAttribute) });
             keyField = ReflectionHelper.GetIdentityField<T>(propertyCache);

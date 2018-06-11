@@ -58,6 +58,7 @@
     <Compile Include="Core\IDapperNonQuery.cs" />
     <Compile Include="Core\IDapperQueryGenerator.cs" />
     <Compile Include="Core\IUpdateQueryBuilder.cs" />
+    <Compile Include="Core\PropertyCache.cs" />
     <Compile Include="Core\ReflectionHelper.cs" />
     <Compile Include="DapperQueryBase.cs" />
     <Compile Include="MsSql\DapperQuery.cs" />
