@@ -9,7 +9,6 @@ namespace DapperMan.MsSql
 {
     public class DeleteQuery : DapperQueryBase, IDeleteQueryBuilder, IDapperQueryGenerator
     {
-        private int? commandTimeout = null;
         private readonly string defaultQueryTemplate = "DELETE FROM {source} {filter};";
         protected List<string> Filters { get; private set; } = new List<string>();
 
@@ -27,7 +26,7 @@ namespace DapperMan.MsSql
         public DeleteQuery(string source, string connectionString, int? commandTimeout)
             : base(connectionString)
         {
-            this.commandTimeout = commandTimeout;
+            CommandTimeout = commandTimeout;
             Source = source;
         }
 
@@ -45,18 +44,18 @@ namespace DapperMan.MsSql
         public DeleteQuery(string source, IDbConnection connection, int? commandTimeout)
             : base(connection)
         {
-            this.commandTimeout = commandTimeout;
+            CommandTimeout = commandTimeout;
             Source = source;
         }
 
         public virtual int Execute(object queryParameters = null, IDbTransaction transaction = null)
         {
-            return Execute(GenerateStatement(), queryParameters, transaction: transaction, commandTimeout: commandTimeout);
+            return Execute(GenerateStatement(), queryParameters, transaction: transaction);
         }
 
         public virtual async Task<int> ExecuteAsync(object queryParameters = null, IDbTransaction transaction = null)
         {
-            return await ExecuteAsync(GenerateStatement(), queryParameters, transaction: transaction, commandTimeout: commandTimeout);
+            return await ExecuteAsync(GenerateStatement(), queryParameters, transaction: transaction);
         }
 
         public virtual string GenerateStatement()

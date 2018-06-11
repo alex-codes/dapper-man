@@ -44,26 +44,6 @@ namespace DapperMan.MsSql
             Connection = connection;
         }
 
-        public static new ISelectQueryBuilder Create(string source, string connectionString)
-        {
-            return Create(source, connectionString, null);
-        }
-
-        public static new ISelectQueryBuilder Create(string source, string connectionString, int? commandTimeout)
-        {
-            return new PageableSelectQuery(source, connectionString, commandTimeout);
-        }
-
-        public static new ISelectQueryBuilder Create(string source, IDbConnection connection)
-        {
-            return Create(source, connection, null);
-        }
-
-        public static new ISelectQueryBuilder Create(string source, IDbConnection connection, int? commandTimeout)
-        {
-            return new PageableSelectQuery(source, connection, commandTimeout);
-        }
-
         public override (IEnumerable<T> Results, int? TotalRows) Execute<T>(object queryParameters = null, IDbTransaction transaction = null)
         {
             var gridReader = QueryMultiple(GenerateStatement(), queryParameters, transaction: transaction);

@@ -10,7 +10,6 @@ namespace DapperMan.MsSql
 {
     public class SelectQuery : DapperQueryBase, ISelectQueryBuilder, IDapperQueryGenerator
     {
-        private int? commandTimeout = null;
         private readonly string defaultQueryTemplate = "SELECT * FROM {source} {filter} {sort};";
         protected List<string> Filters { get; private set; } = new List<string>();
         protected List<string> SortOrders { get; private set; } = new List<string>();
@@ -29,7 +28,7 @@ namespace DapperMan.MsSql
         public SelectQuery(string source, string connectionString, int? commandTimeout)
             : base(connectionString)
         {
-            this.commandTimeout = commandTimeout;
+            CommandTimeout = commandTimeout;
             Source = source;
         }
 
@@ -47,19 +46,19 @@ namespace DapperMan.MsSql
         public SelectQuery(string source, IDbConnection connection, int? commandTimeout)
             : base(connection)
         {
-            this.commandTimeout = commandTimeout;
+            CommandTimeout = commandTimeout;
             Source = source;
         }
 
         public virtual (IEnumerable<T> Results, int? TotalRows) Execute<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class
         {
-            var results = Query<T>(GenerateStatement(), queryParameters, transaction: transaction, commandTimeout: commandTimeout);
+            var results = Query<T>(GenerateStatement(), queryParameters, transaction: transaction);
             return (results, results.Count());
         }
 
         public virtual async Task<(IEnumerable<T> Results, int? TotalRows)> ExecuteAsync<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class
         {
-            var results = await QueryAsync<T>(GenerateStatement(), queryParameters, transaction: transaction, commandTimeout: commandTimeout);
+            var results = await QueryAsync<T>(GenerateStatement(), queryParameters, transaction: transaction);
             return (results, results.Count());
         }
 
@@ -91,7 +90,7 @@ namespace DapperMan.MsSql
 
         public virtual ISelectQueryBuilder SkipTake(int skip, int take)
         {
-            var query = new PageableSelectQuery(Source, ConnectionString, Connection, commandTimeout);
+            var query = new PageableSelectQuery(Source, ConnectionString, Connection, CommandTimeout);
 
             foreach (string filter in Filters)
             {

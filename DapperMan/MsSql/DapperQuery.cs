@@ -3,8 +3,31 @@ using System.Data;
 
 namespace DapperMan.MsSql
 {
-    public static class DapperQuery
+    public class DapperQuery : DapperQueryBase
     {
+        public DapperQuery(string connectionString)
+            : base(connectionString)
+        {
+
+        }
+
+        public DapperQuery(IDbConnection connection)
+            : base(connection)
+        {
+
+        }
+
+        // static factory methods for a cleaner builder pattern
+        public static DapperQuery Create(string connectionString)
+        {
+            return new DapperQuery(connectionString);
+        }
+
+        public static DapperQuery Create(IDbConnection connection)
+        {
+            return new DapperQuery(connection);
+        }
+
         public static IDeleteQueryBuilder Delete(string source, string connectionString)
         {
             return new DeleteQuery(source, connectionString);

@@ -11,7 +11,6 @@ namespace DapperMan.MsSql
 {
     public class UpdateQuery : DapperQueryBase, IUpdateQueryBuilder
     {
-        private int? commandTimeout = null;
         private string defaultQyeryTemplate = "UPDATE {source} SET {fields} {filter};";
         protected List<string> Filters { get; private set; } = new List<string>();
         private string[] propNames = null;
@@ -24,7 +23,7 @@ namespace DapperMan.MsSql
         public UpdateQuery(string source, string connectionString, int? commandTimeout)
            : base(connectionString)
         {
-            this.commandTimeout = commandTimeout;
+            CommandTimeout = commandTimeout;
             Source = source;
         }
 
@@ -36,7 +35,7 @@ namespace DapperMan.MsSql
         public UpdateQuery(string source, IDbConnection connection, int? commandTimeout)
             : base(connection)
         {
-            this.commandTimeout = commandTimeout;
+            CommandTimeout = commandTimeout;
             Source = source;
         }
 
