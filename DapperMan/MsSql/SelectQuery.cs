@@ -51,26 +51,6 @@ namespace DapperMan.MsSql
             Source = source;
         }
 
-        public static ISelectQueryBuilder Create(string source, string connectionString)
-        {
-            return Create(source, connectionString, null);
-        }
-
-        public static ISelectQueryBuilder Create(string source, string connectionString, int? commandTimeout)
-        {
-            return new SelectQuery(source, connectionString, commandTimeout);
-        }
-
-        public static ISelectQueryBuilder Create(string source, IDbConnection connection)
-        {
-            return Create(source, connection, null);
-        }
-
-        public static ISelectQueryBuilder Create(string source, IDbConnection connection, int? commandTimeout)
-        {
-            return new SelectQuery(source, connection, commandTimeout);
-        }
-
         public virtual (IEnumerable<T> Results, int? TotalRows) Execute<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class
         {
             var results = Query<T>(GenerateStatement(), queryParameters, transaction: transaction, commandTimeout: commandTimeout);

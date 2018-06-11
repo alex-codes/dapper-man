@@ -18,13 +18,13 @@ namespace DapperMan.MsSql
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
         /// <param name="connectionString">The name of the connection strin.</param>
-        private DeleteQuery(string source, string connectionString)
+        public DeleteQuery(string source, string connectionString)
             : this(source, connectionString, null)
         {
 
         }
 
-        private DeleteQuery(string source, string connectionString, int? commandTimeout)
+        public DeleteQuery(string source, string connectionString, int? commandTimeout)
             : base(connectionString)
         {
             this.commandTimeout = commandTimeout;
@@ -36,37 +36,17 @@ namespace DapperMan.MsSql
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
         /// <param name="connection">A connection to the database.</param>
-        private DeleteQuery(string source, IDbConnection connection)
+        public DeleteQuery(string source, IDbConnection connection)
             : this(source, connection, null)
         {
 
         }
 
-        private DeleteQuery(string source, IDbConnection connection, int? commandTimeout)
+        public DeleteQuery(string source, IDbConnection connection, int? commandTimeout)
             : base(connection)
         {
             this.commandTimeout = commandTimeout;
             Source = source;
-        }
-
-        public static IDeleteQueryBuilder Create(string source, string connectionString)
-        {
-            return Create(source, connectionString, null);
-        }
-
-        public static IDeleteQueryBuilder Create(string source, string connectionString, int? commandTimeout)
-        {
-            return new DeleteQuery(source, connectionString, commandTimeout);
-        }
-
-        public static IDeleteQueryBuilder Create(string source, IDbConnection connection)
-        {
-            return Create(source, connection, null);
-        }
-
-        public static IDeleteQueryBuilder Create(string source, IDbConnection connection, int? commandTimeout)
-        {
-            return new DeleteQuery(source, connection, commandTimeout);
         }
 
         public virtual int Execute(object queryParameters = null, IDbTransaction transaction = null)
