@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
-using System.Linq;
 using System.Runtime.Caching;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DapperMan.MsSql
@@ -15,9 +13,8 @@ namespace DapperMan.MsSql
     {
         private int? commandTimeout = null;
         private string defaultQyeryTemplate = "UPDATE {source} SET {fields} {filter};";
-        private List<string> filters = new List<string>();
+        protected List<string> Filters { get; private set; } = new List<string>();
         private string[] propNames = null;
-        private string source;
 
         public UpdateQuery(string source, string connectionString)
             : this(source, connectionString, null)
@@ -28,7 +25,7 @@ namespace DapperMan.MsSql
            : base(connectionString)
         {
             this.commandTimeout = commandTimeout;
-            this.source = source;
+            Source = source;
         }
 
         public UpdateQuery(string source, IDbConnection connection)
@@ -40,7 +37,7 @@ namespace DapperMan.MsSql
             : base(connection)
         {
             this.commandTimeout = commandTimeout;
-            this.source = source;
+            Source = source;
         }
 
         public int Execute<T>(object queryParameters = null, ObjectCache propertyCache = null, IDbTransaction transaction = null) where T : class
@@ -74,10 +71,10 @@ namespace DapperMan.MsSql
 
         public virtual string GenerateStatement()
         {
-            string filter = string.Join(" AND ", filters);
+            string filter = string.Join(" AND ", Filters);
 
             string sql = defaultQyeryTemplate
-                .Replace("{source}", source)
+                .Replace("{source}", Source)
                 .Replace("{fields}", FormatPropertyNames(propNames))
                 .Replace("{filter}", string.IsNullOrWhiteSpace(filter) ? "" : "WHERE " + filter);
 
@@ -98,7 +95,7 @@ namespace DapperMan.MsSql
                 throw new ArgumentNullException(nameof(filter));
             }
 
-            filters.Add(filter);
+            Filters.Add(filter);
             return this;
         }
     }

@@ -11,8 +11,7 @@ namespace DapperMan.MsSql
     {
         private int? commandTimeout = null;
         private readonly string defaultQueryTemplate = "DELETE FROM {source} {filter};";
-        private List<string> filters = new List<string>();
-        private readonly string source;
+        protected List<string> Filters { get; private set; } = new List<string>();
 
         /// <summary>
         /// Creates a new delete query
@@ -29,7 +28,7 @@ namespace DapperMan.MsSql
             : base(connectionString)
         {
             this.commandTimeout = commandTimeout;
-            this.source = source;
+            Source = source;
         }
 
         /// <summary>
@@ -47,7 +46,7 @@ namespace DapperMan.MsSql
             : base(connection)
         {
             this.commandTimeout = commandTimeout;
-            this.source = source;
+            Source = source;
         }
 
         public static IDeleteQueryBuilder Create(string source, string connectionString)
@@ -82,10 +81,10 @@ namespace DapperMan.MsSql
 
         public virtual string GenerateStatement()
         {
-            string filter = string.Join(" AND ", filters);
+            string filter = string.Join(" AND ", Filters);
 
             string sql = this.defaultQueryTemplate
-                .Replace("{source}", source)
+                .Replace("{source}", Source)
                 .Replace("{filter}", string.IsNullOrWhiteSpace(filter) ? "" : "WHERE " + filter);
 
             Debug.WriteLine(sql);
@@ -100,7 +99,7 @@ namespace DapperMan.MsSql
                 throw new ArgumentNullException(nameof(filter));
             }
 
-            filters.Add(filter);
+            Filters.Add(filter);
             return this;
         }
     }

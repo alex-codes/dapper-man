@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DapperMan.MsSql
@@ -11,9 +12,8 @@ namespace DapperMan.MsSql
     {
         private int? commandTimeout = null;
         private readonly string defaultQueryTemplate = "SELECT * FROM {source} {filter} {sort};";
-        private List<string> filters = new List<string>();
-        private List<string> sortOrders = new List<string>();
-        private readonly string source;
+        protected List<string> Filters { get; private set; } = new List<string>();
+        protected List<string> SortOrders { get; private set; } = new List<string>();
 
         /// <summary>
         /// Creates a new select query
@@ -30,7 +30,7 @@ namespace DapperMan.MsSql
             : base(connectionString)
         {
             this.commandTimeout = commandTimeout;
-            this.source = source;
+            Source = source;
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace DapperMan.MsSql
             : base(connection)
         {
             this.commandTimeout = commandTimeout;
-            this.source = source;
+            Source = source;
         }
 
         public static ISelectQueryBuilder Create(string source, string connectionString)
@@ -74,22 +74,22 @@ namespace DapperMan.MsSql
         public virtual (IEnumerable<T> Results, int? TotalRows) Execute<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class
         {
             var results = Query<T>(GenerateStatement(), queryParameters, transaction: transaction, commandTimeout: commandTimeout);
-            return (results, null);
+            return (results, results.Count());
         }
 
         public virtual async Task<(IEnumerable<T> Results, int? TotalRows)> ExecuteAsync<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class
         {
             var results = await QueryAsync<T>(GenerateStatement(), queryParameters, transaction: transaction, commandTimeout: commandTimeout);
-            return (results, null);
+            return (results, results.Count());
         }
 
         public virtual string GenerateStatement()
         {
-            string filter = string.Join(" AND ", filters);
-            string sort = string.Join(", ", sortOrders);
+            string filter = string.Join(" AND ", Filters);
+            string sort = string.Join(", ", SortOrders);
 
-            string sql = this.defaultQueryTemplate
-                .Replace("{source}", source)
+            string sql = defaultQueryTemplate
+                .Replace("{source}", Source)
                 .Replace("{filter}", string.IsNullOrWhiteSpace(filter) ? "" : "WHERE " + filter)
                 .Replace("{sort}", string.IsNullOrWhiteSpace(sort) ? "" : "WHERE " + sort);
 
@@ -105,20 +105,20 @@ namespace DapperMan.MsSql
                 throw new ArgumentNullException(nameof(orderBy));
             }
 
-            sortOrders.Add(orderBy);
+            SortOrders.Add(orderBy);
             return this;
         }
 
         public virtual ISelectQueryBuilder SkipTake(int skip, int take)
         {
-            var query = new PageableSelectQuery(source, ConnectionString, Connection, commandTimeout);
+            var query = new PageableSelectQuery(Source, ConnectionString, Connection, commandTimeout);
 
-            foreach (string filter in filters)
+            foreach (string filter in Filters)
             {
                 query.Where(filter);
             }
 
-            foreach (string sort in sortOrders)
+            foreach (string sort in SortOrders)
             {
                 query.OrderBy(sort);
             }
@@ -133,7 +133,7 @@ namespace DapperMan.MsSql
                 throw new ArgumentNullException(nameof(filter));
             }
 
-            filters.Add(filter);
+            Filters.Add(filter);
             return this;
         }
     }

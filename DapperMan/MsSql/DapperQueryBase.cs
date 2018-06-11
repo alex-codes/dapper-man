@@ -11,6 +11,7 @@ namespace DapperMan.MsSql
     {
         protected string ConnectionString { get; set; }
         protected IDbConnection Connection { get; set; }
+        protected string Source { get; set; }
 
         protected DapperQueryBase(string connectionString)
         {
@@ -56,6 +57,22 @@ namespace DapperMan.MsSql
             using (var conn = await ResolveConnectionAsync())
             {
                 return await conn.QueryAsync<T>(sql: query, param: param, commandType: commandType, commandTimeout: commandTimeout, transaction: transaction);
+            }
+        }
+
+        public virtual SqlMapper.GridReader QueryMultiple(string query, object param = null, CommandType commandType = CommandType.Text, int? commandTimeout = null, IDbTransaction transaction = null)
+        {
+            using (var conn = ResolveConnection())
+            {
+                return conn.QueryMultiple(sql: query, param: param, commandType: commandType, commandTimeout: commandTimeout, transaction: transaction);
+            }
+        }
+
+        public async virtual Task<SqlMapper.GridReader> QueryMultipleAsync(string query, object param = null, CommandType commandType = CommandType.Text, int? commandTimeout = null, IDbTransaction transaction = null)
+        {
+            using (var conn = await ResolveConnectionAsync())
+            {
+                return await conn.QueryMultipleAsync(sql: query, param: param, commandType: commandType, commandTimeout: commandTimeout, transaction: transaction);
             }
         }
 

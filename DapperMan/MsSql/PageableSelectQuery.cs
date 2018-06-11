@@ -2,16 +2,17 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DapperMan.MsSql
 {
     public class PageableSelectQuery : SelectQuery
     {
-        private int skip;
-        private int take;
+        private string defaultQueryTemplate = "SELECT * FROM {source} {filter} {sort} OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY;";
+        protected int Skip { get; set; }
+        protected int Take { get; set; }
 
         public PageableSelectQuery(string source, string connectionString)
             : this(source, connectionString, null)
@@ -63,25 +64,57 @@ namespace DapperMan.MsSql
             return new PageableSelectQuery(source, connection, commandTimeout);
         }
 
-        public override int Execute(string query, object param = null, CommandType commandType = CommandType.Text, int? commandTimeout = null, IDbTransaction transaction = null)
+        public override (IEnumerable<T> Results, int? TotalRows) Execute<T>(object queryParameters = null, IDbTransaction transaction = null)
         {
-            throw new NotImplementedException();
+            var gridReader = QueryMultiple(GenerateStatement(), queryParameters, transaction: transaction);
+            var results = gridReader.Read<T>();
+            int totalRows = gridReader.Read<int>().First();
+
+            return (results, totalRows);
         }
 
-        public override Task<int> ExecuteAsync(string query, object param = null, CommandType commandType = CommandType.Text, int? commandTimeout = null, IDbTransaction transaction = null)
+        public override async Task<(IEnumerable<T> Results, int? TotalRows)> ExecuteAsync<T>(object queryParameters = null, IDbTransaction transaction = null)
         {
-            throw new NotImplementedException();
+            var gridReader = await QueryMultipleAsync(GenerateStatement(), queryParameters, transaction: transaction);
+            var results = gridReader.Read<T>();
+            int totalRows = gridReader.Read<int>().First();
+
+            return (results, totalRows);
         }
 
         public override string GenerateStatement()
         {
-            throw new NotImplementedException();
+            string filter = string.Join(" AND ", Filters);
+            string sort = string.Join(", ", SortOrders);
+            int offset = Skip;
+            int pageSize = Take;
+
+            string sql = this.defaultQueryTemplate
+                .Replace("{source}", Source)
+                .Replace("{filter}", string.IsNullOrWhiteSpace(filter) ? "" : "WHERE " + filter)
+                .Replace("{sort}", string.IsNullOrWhiteSpace(sort) ? "" : "WHERE " + sort)
+                .Replace("{offset}", offset.ToString())
+                .Replace("{pageSize}", pageSize.ToString());
+
+            string rowCountSql = sql
+                .Replace("SELECT *", "SELECT COUNT(*)");
+
+            sql += rowCountSql;
+
+            Debug.WriteLine(sql);
+
+            return sql;
         }
 
         public override ISelectQueryBuilder SkipTake(int skip, int take)
         {
-            this.skip = skip;
-            this.take = take;
+            if (skip < 0 || take < 0)
+            {
+                throw new ArgumentException("Cannot skip/take less than 0 records");
+            }
+
+            Skip = skip;
+            Take = take;
 
             return this;
         }

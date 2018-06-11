@@ -60,7 +60,6 @@
     <Compile Include="Core\IUpdateQueryBuilder.cs" />
     <Compile Include="Core\ReflectionHelper.cs" />
     <Compile Include="MsSql\DapperQueryBase.cs" />
-    <Compile Include="MsSql\DapperQuery.cs" />
     <Compile Include="MsSql\DeleteQuery.cs" />
     <Compile Include="MsSql\FunctionQuery.cs" />
     <Compile Include="MsSql\InsertQuery.cs" />

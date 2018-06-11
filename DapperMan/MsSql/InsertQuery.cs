@@ -1,14 +1,9 @@
 ﻿using DapperMan.Core;
 using DapperMan.Core.Attributes;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.Caching;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DapperMan.MsSql
@@ -20,7 +15,6 @@ namespace DapperMan.MsSql
         private string keyField = null;
         private string[] propNames = null;
         private string scopeIdentityTemplate = "SELECT CAST(SCOPE_IDENTITY() as int);";
-        private string source;
 
         public InsertQuery(string source, string connectionString)
             : this(source, connectionString, null)
@@ -31,7 +25,7 @@ namespace DapperMan.MsSql
            : base(connectionString)
         {
             this.commandTimeout = commandTimeout;
-            this.source = source;
+            Source = source;
         }
 
         public InsertQuery(string source, IDbConnection connection)
@@ -43,7 +37,7 @@ namespace DapperMan.MsSql
             : base(connection)
         {
             this.commandTimeout = commandTimeout;
-            this.source = source;
+            Source = source;
         }
 
         public int Execute<T>(object queryParameters = null, ObjectCache propertyCache = null, IDbTransaction transaction = null) where T : class
@@ -88,9 +82,14 @@ namespace DapperMan.MsSql
         public virtual string GenerateStatement()
         {
             string sql = defaultQyeryTemplate
-                .Replace("{source}", source)
+                .Replace("{source}", Source)
                 .Replace("{fields}", FormatPropertyNames(propNames))
                 .Replace("{values}", FormatPropertyParameters(propNames));
+
+            if (!string.IsNullOrWhiteSpace(keyField))
+            {
+                sql += scopeIdentityTemplate;
+            }
 
             Debug.WriteLine(sql);
 
