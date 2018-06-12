@@ -1,6 +1,6 @@
 ﻿namespace DapperMan.Core
 {
-    public interface IInsertQueryBuilder : IDapperCacheableNonQuery
+    public interface IInsertQueryBuilder : ICacheableNonQuery
     {
 
     }

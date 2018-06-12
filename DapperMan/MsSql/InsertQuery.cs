@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DapperMan.MsSql
 {
-    public class InsertQuery : DapperQueryBase, IInsertQueryBuilder, IDapperQueryGenerator
+    public class InsertQuery : DapperQueryBase, IInsertQueryBuilder, IQueryGenerator
     {
         private string defaultQyeryTemplate = "INSERT INTO {source} ({fields}) VALUES ({values});";
         private string keyField = null;

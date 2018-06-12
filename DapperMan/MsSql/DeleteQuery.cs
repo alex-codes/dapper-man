@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DapperMan.MsSql
 {
-    public class DeleteQuery : DapperQueryBase, IDeleteQueryBuilder, IDapperQueryGenerator
+    public class DeleteQuery : DapperQueryBase, IDeleteQueryBuilder, IQueryGenerator
     {
         private readonly string defaultQueryTemplate = "DELETE FROM {source} {filter};";
         protected List<string> Filters { get; private set; } = new List<string>();

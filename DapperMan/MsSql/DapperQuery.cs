@@ -28,22 +28,22 @@ namespace DapperMan.MsSql
             return new DapperQuery(connection);
         }
 
-        public static IDapperCountQueryBuilder Count(string source, string connectionString)
+        public static ICountQueryBuilder Count(string source, string connectionString)
         {
             return new CountQuery(source, connectionString);
         }
 
-        public static IDapperCountQueryBuilder Count(string source, string connectionString, int? commandTimeout)
+        public static ICountQueryBuilder Count(string source, string connectionString, int? commandTimeout)
         {
             return new CountQuery(source, connectionString, commandTimeout);
         }
 
-        public static IDapperCountQueryBuilder Count(string source, IDbConnection connection)
+        public static ICountQueryBuilder Count(string source, IDbConnection connection)
         {
             return new CountQuery(source, connection);
         }
 
-        public static IDapperCountQueryBuilder Count(string source, IDbConnection connection, int? commandTimeout)
+        public static ICountQueryBuilder Count(string source, IDbConnection connection, int? commandTimeout)
         {
             return new CountQuery(source, connection, commandTimeout);
         }

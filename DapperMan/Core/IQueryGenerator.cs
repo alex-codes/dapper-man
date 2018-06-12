@@ -1,6 +1,6 @@
 ﻿namespace DapperMan.Core
 {
-    public interface IDapperQueryGenerator
+    public interface IQueryGenerator
     {
         string GenerateStatement();
     }

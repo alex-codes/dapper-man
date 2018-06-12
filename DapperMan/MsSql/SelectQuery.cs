@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DapperMan.MsSql
 {
-    public class SelectQuery : DapperQueryBase, ISelectQueryBuilder, IDapperQueryGenerator
+    public class SelectQuery : DapperQueryBase, ISelectQueryBuilder, IQueryGenerator
     {
         private readonly string defaultQueryTemplate = "SELECT * FROM {source} {filter} {sort};";
         protected List<string> Filters { get; private set; } = new List<string>();

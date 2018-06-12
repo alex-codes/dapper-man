@@ -3,10 +3,10 @@ using System.Threading.Tasks;
 
 namespace DapperMan.Core
 {
-    public interface IDapperCountQueryBuilder
+    public interface ICountQueryBuilder
     {
         int Execute(object queryParameters = null, IDbTransaction transaction = null);
         Task<int> ExecuteAsync(object queryParameters = null, IDbTransaction transaction = null);
-        IDapperCountQueryBuilder Where(string filter);
+        ICountQueryBuilder Where(string filter);
     }
 }

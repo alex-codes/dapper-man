@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DapperMan.MsSql
 {
-    public class CountQuery : DapperQueryBase, IDapperCountQueryBuilder, IDapperQueryGenerator
+    public class CountQuery : DapperQueryBase, ICountQueryBuilder, IQueryGenerator
     {
         private string defaultQueryTemplate = "SELECT [Count] = COUNT(*) FROM {source} {filter};";
         protected List<string> Filters { get; private set; } = new List<string>();
@@ -64,7 +64,7 @@ namespace DapperMan.MsSql
             return sql;
         }
 
-        public virtual IDapperCountQueryBuilder Where(string filter)
+        public virtual ICountQueryBuilder Where(string filter)
         {
             if (string.IsNullOrWhiteSpace(filter))
             {

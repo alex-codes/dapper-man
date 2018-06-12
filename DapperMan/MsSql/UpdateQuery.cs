@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DapperMan.MsSql
 {
-    public class UpdateQuery : DapperQueryBase, IUpdateQueryBuilder, IDapperQueryGenerator
+    public class UpdateQuery : DapperQueryBase, IUpdateQueryBuilder, IQueryGenerator
     {
         private string defaultQyeryTemplate = "UPDATE {source} SET {fields} {filter};";
         protected List<string> Filters { get; private set; } = new List<string>();

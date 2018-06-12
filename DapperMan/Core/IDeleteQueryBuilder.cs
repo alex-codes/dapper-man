@@ -1,6 +1,6 @@
 ﻿namespace DapperMan.Core
 {
-    public interface IDeleteQueryBuilder : IDapperNonQuery
+    public interface IDeleteQueryBuilder : INonQuery
     {
         IDeleteQueryBuilder Where(string filter);
     }
