@@ -1,4 +1,5 @@
-﻿using DapperMan.Core;
+﻿using Dapper;
+using DapperMan.Core;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -11,6 +12,7 @@ namespace DapperMan.MsSql
     public class PageableSelectQuery : SelectQuery
     {
         private string defaultQueryTemplate = "SELECT * FROM {source} {filter} {sort} OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY;";
+        private string defaultCountQueryTemplate = "SELECT COUNT(*) FROM {source} {filter};";
         protected int Skip { get; set; }
         protected int Take { get; set; }
 
@@ -44,20 +46,34 @@ namespace DapperMan.MsSql
             Connection = connection;
         }
 
-        public override (IEnumerable<T> Results, int? TotalRows) Execute<T>(object queryParameters = null, IDbTransaction transaction = null)
+        public override (IEnumerable<T> Results, int TotalRows) Execute<T>(object queryParameters = null, IDbTransaction transaction = null)
         {
-            var gridReader = QueryMultiple(GenerateStatement(), queryParameters, transaction: transaction);
-            var results = gridReader.Read<T>();
-            int totalRows = gridReader.Read<int>().First();
+            IEnumerable<T> results = null;
+            int totalRows = 0;
+
+            void mapper(SqlMapper.GridReader gridReader)
+            {
+                results = gridReader.Read<T>();
+                totalRows = gridReader.Read<int>().First();
+            }
+
+            QueryMultiple(GenerateStatement(), mapper, queryParameters, transaction: transaction);
 
             return (results, totalRows);
         }
 
-        public override async Task<(IEnumerable<T> Results, int? TotalRows)> ExecuteAsync<T>(object queryParameters = null, IDbTransaction transaction = null)
+        public override async Task<(IEnumerable<T> Results, int TotalRows)> ExecuteAsync<T>(object queryParameters = null, IDbTransaction transaction = null)
         {
-            var gridReader = await QueryMultipleAsync(GenerateStatement(), queryParameters, transaction: transaction);
-            var results = gridReader.Read<T>();
-            int totalRows = gridReader.Read<int>().First();
+            IEnumerable<T> results = null;
+            int totalRows = 0;
+
+            void mapper(SqlMapper.GridReader gridReader)
+            {
+                results = gridReader.Read<T>();
+                totalRows = gridReader.Read<int>().First();
+            }
+
+            await QueryMultipleAsync(GenerateStatement(), mapper, queryParameters, transaction: transaction);
 
             return (results, totalRows);
         }
@@ -74,10 +90,13 @@ namespace DapperMan.MsSql
                 .Replace("{filter}", string.IsNullOrWhiteSpace(filter) ? "" : "WHERE " + filter)
                 .Replace("{sort}", string.IsNullOrWhiteSpace(sort) ? "" : "ORDER BY " + sort)
                 .Replace("{offset}", offset.ToString())
-                .Replace("{pageSize}", pageSize.ToString());
+                .Replace("{pageSize}", pageSize.ToString())
+                .Replace("  ", "");
 
-            string rowCountSql = sql
-                .Replace("SELECT *", "SELECT COUNT(*)");
+            string rowCountSql = defaultCountQueryTemplate
+                .Replace("{source}", Source)
+                .Replace("{filter}", string.IsNullOrWhiteSpace(filter) ? "" : "WHERE " + filter)
+                .Replace("  ", "");
 
             sql += rowCountSql;
 

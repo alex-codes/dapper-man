@@ -70,12 +70,12 @@ namespace DapperMan.MsSql
 
         protected string FormatPropertyNames(string[] props)
         {
-            return string.Join(",", props);
+            return string.Join(",", props.Select(s => $"[{s}]"));
         }
 
         protected string FormatPropertyParameters(string[] props)
         {
-            return string.Join(",", props.Select(s => "@" + s));
+            return string.Join(",", props.Select(s => $"@{s}"));
         }
 
         public virtual string GenerateStatement()
@@ -83,7 +83,8 @@ namespace DapperMan.MsSql
             string sql = defaultQyeryTemplate
                 .Replace("{source}", Source)
                 .Replace("{fields}", FormatPropertyNames(propNames))
-                .Replace("{values}", FormatPropertyParameters(propNames));
+                .Replace("{values}", FormatPropertyParameters(propNames))
+                .Replace("  ", "");
 
             if (!string.IsNullOrWhiteSpace(keyField))
             {

@@ -61,19 +61,21 @@ namespace DapperMan.MsSql
             }
         }
 
-        public virtual SqlMapper.GridReader QueryMultiple(string query, object param = null, CommandType commandType = CommandType.Text, IDbTransaction transaction = null)
+        public virtual void QueryMultiple(string query, Action<SqlMapper.GridReader> map, object param = null, CommandType commandType = CommandType.Text, IDbTransaction transaction = null)
         {
             using (var conn = ResolveConnection())
             {
-                return conn.QueryMultiple(sql: query, param: param, commandType: commandType, transaction: transaction);
+                var results = conn.QueryMultiple(sql: query, param: param, commandType: commandType, transaction: transaction);
+                map(results);
             }
         }
 
-        public async virtual Task<SqlMapper.GridReader> QueryMultipleAsync(string query, object param = null, CommandType commandType = CommandType.Text, IDbTransaction transaction = null)
+        public async virtual Task QueryMultipleAsync(string query, Action<SqlMapper.GridReader> map, object param = null, CommandType commandType = CommandType.Text, IDbTransaction transaction = null)
         {
             using (var conn = await ResolveConnectionAsync())
             {
-                return await conn.QueryMultipleAsync(sql: query, param: param, commandType: commandType, transaction: transaction);
+                var results = await conn.QueryMultipleAsync(sql: query, param: param, commandType: commandType, transaction: transaction);
+                map(results);
             }
         }
 

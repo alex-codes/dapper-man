@@ -50,13 +50,13 @@ namespace DapperMan.MsSql
             Source = source;
         }
 
-        public virtual (IEnumerable<T> Results, int? TotalRows) Execute<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class
+        public virtual (IEnumerable<T> Results, int TotalRows) Execute<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class
         {
             var results = Query<T>(GenerateStatement(), queryParameters, transaction: transaction);
             return (results, results.Count());
         }
 
-        public virtual async Task<(IEnumerable<T> Results, int? TotalRows)> ExecuteAsync<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class
+        public virtual async Task<(IEnumerable<T> Results, int TotalRows)> ExecuteAsync<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class
         {
             var results = await QueryAsync<T>(GenerateStatement(), queryParameters, transaction: transaction);
             return (results, results.Count());
@@ -70,7 +70,8 @@ namespace DapperMan.MsSql
             string sql = defaultQueryTemplate
                 .Replace("{source}", Source)
                 .Replace("{filter}", string.IsNullOrWhiteSpace(filter) ? "" : "WHERE " + filter)
-                .Replace("{sort}", string.IsNullOrWhiteSpace(sort) ? "" : "ORDER BY " + sort);
+                .Replace("{sort}", string.IsNullOrWhiteSpace(sort) ? "" : "ORDER BY " + sort)
+                .Replace("  ", "");
 
             Debug.WriteLine(sql);
 

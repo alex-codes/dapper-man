@@ -56,7 +56,7 @@ namespace DapperMan.MsSql
 
             for (int i = 0; i < props.Length; i++)
             {
-                propNames = string.Concat(propNames, string.Format("{0} = @{0}", props[i]));
+                propNames = string.Concat(propNames, string.Format("[{0}] = @{0}", props[i]));
 
                 if (i != props.Length - 1)
                 {
@@ -74,7 +74,8 @@ namespace DapperMan.MsSql
             string sql = defaultQyeryTemplate
                 .Replace("{source}", Source)
                 .Replace("{fields}", FormatPropertyNames(propNames))
-                .Replace("{filter}", string.IsNullOrWhiteSpace(filter) ? "" : "WHERE " + filter);
+                .Replace("{filter}", string.IsNullOrWhiteSpace(filter) ? "" : "WHERE " + filter)
+                .Replace("  ", "");
 
             Debug.WriteLine(sql);
 
