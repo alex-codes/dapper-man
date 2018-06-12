@@ -52,6 +52,7 @@
     <Compile Include="Core\Attributes\InsertIgnoreAttribute.cs" />
     <Compile Include="Core\Attributes\UpdateIgnoreAttribute.cs" />
     <Compile Include="Core\IDapperCacheableNonQuery.cs" />
+    <Compile Include="Core\IDapperCountQueryBuilder.cs" />
     <Compile Include="Core\IDeleteQueryBuilder.cs" />
     <Compile Include="Core\IInsertQueryBuilder.cs" />
     <Compile Include="Core\ISelectQueryBuilder.cs" />
@@ -61,6 +62,7 @@
     <Compile Include="Core\PropertyCache.cs" />
     <Compile Include="Core\ReflectionHelper.cs" />
     <Compile Include="DapperQueryBase.cs" />
+    <Compile Include="MsSql\CountQuery.cs" />
     <Compile Include="MsSql\DapperQuery.cs" />
     <Compile Include="MsSql\DeleteQuery.cs" />
     <Compile Include="MsSql\FunctionQuery.cs" />
