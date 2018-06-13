@@ -39,18 +39,18 @@ namespace DapperMan.MsSql
             Source = source;
         }
 
-        public int Execute(object queryParameters = null, IDbTransaction transaction = null)
+        public virtual int Execute(object queryParameters = null, IDbTransaction transaction = null)
         {
             return Query<int>(GenerateStatement(), queryParameters, transaction: transaction).First();
         }
 
-        public async Task<int> ExecuteAsync(object queryParameters = null, IDbTransaction transaction = null)
+        public virtual async Task<int> ExecuteAsync(object queryParameters = null, IDbTransaction transaction = null)
         {
             var results = await QueryAsync<int>(GenerateStatement(), queryParameters, transaction: transaction);
             return results.First();
         }
 
-        public string GenerateStatement()
+        public virtual string GenerateStatement()
         {
             string filter = string.Join(" AND ", Filters);
 

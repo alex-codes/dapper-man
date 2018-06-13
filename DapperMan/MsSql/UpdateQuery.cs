@@ -38,19 +38,19 @@ namespace DapperMan.MsSql
             Source = source;
         }
 
-        public int Execute<T>(object queryParameters = null, PropertyCache propertyCache = null, IDbTransaction transaction = null) where T : class
+        public virtual int Execute<T>(object queryParameters = null, PropertyCache propertyCache = null, IDbTransaction transaction = null) where T : class
         {
             ReflectType<T>(propertyCache);
             return Execute(GenerateStatement(), queryParameters, transaction: transaction);
         }
 
-        public async Task<int> ExecuteAsync<T>(object queryParameters = null, PropertyCache propertyCache = null, IDbTransaction transaction = null) where T : class
+        public virtual async Task<int> ExecuteAsync<T>(object queryParameters = null, PropertyCache propertyCache = null, IDbTransaction transaction = null) where T : class
         {
             ReflectType<T>(propertyCache);
             return await ExecuteAsync(GenerateStatement(), queryParameters, transaction: transaction);
         }
 
-        protected string FormatPropertyNames(string[] props)
+        protected virtual string FormatPropertyNames(string[] props)
         {
             string propNames = "";
 
@@ -87,7 +87,7 @@ namespace DapperMan.MsSql
             propNames = ReflectionHelper.ReflectProperties<T>(propertyCache, new[] { typeof(IdentityAttribute), typeof(UpdateIgnoreAttribute) });
         }
 
-        public IUpdateQueryBuilder Where(string filter)
+        public virtual IUpdateQueryBuilder Where(string filter)
         {
             if (string.IsNullOrWhiteSpace(filter))
             {

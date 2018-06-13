@@ -39,7 +39,7 @@ namespace DapperMan.MsSql
             Source = source;
         }
 
-        public int Execute<T>(object queryParameters = null, PropertyCache propertyCache = null, IDbTransaction transaction = null) where T : class
+        public virtual int Execute<T>(object queryParameters = null, PropertyCache propertyCache = null, IDbTransaction transaction = null) where T : class
         {
             ReflectType<T>(propertyCache);
 
@@ -53,7 +53,7 @@ namespace DapperMan.MsSql
             }
         }
 
-        public async Task<int> ExecuteAsync<T>(object queryParameters = null, PropertyCache propertyCache = null, IDbTransaction transaction = null) where T : class
+        public virtual async Task<int> ExecuteAsync<T>(object queryParameters = null, PropertyCache propertyCache = null, IDbTransaction transaction = null) where T : class
         {
             ReflectType<T>(propertyCache);
 
@@ -68,12 +68,12 @@ namespace DapperMan.MsSql
             }
         }
 
-        protected string FormatPropertyNames(string[] props)
+        protected virtual string FormatPropertyNames(string[] props)
         {
             return string.Join(",", props.Select(s => $"[{s}]"));
         }
 
-        protected string FormatPropertyParameters(string[] props)
+        protected virtual string FormatPropertyParameters(string[] props)
         {
             return string.Join(",", props.Select(s => $"@{s}"));
         }
