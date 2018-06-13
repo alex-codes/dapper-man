@@ -128,6 +128,26 @@ namespace DapperMan.MsSql
             return new SelectQuery(source, connection, commandTimeout);
         }
 
+        public static IStoredProcedureQueryBuilder StoredProcedure(string storedProcedureName, string connectionString)
+        {
+            return new StoredProcedureQuery(storedProcedureName, connectionString);
+        }
+
+        public static IStoredProcedureQueryBuilder StoredProcedure(string storedProcedureName, string connectionString, int? commandTimeout)
+        {
+            return new StoredProcedureQuery(storedProcedureName, connectionString, commandTimeout);
+        }
+
+        public static IStoredProcedureQueryBuilder StoredProcedure(string storedProcedureName, IDbConnection connection)
+        {
+            return new StoredProcedureQuery(storedProcedureName, connection);
+        }
+
+        public static IStoredProcedureQueryBuilder StoredProcedure(string storedProcedureName, IDbConnection connection, int? commandTimeout)
+        {
+            return new StoredProcedureQuery(storedProcedureName, connection, commandTimeout);
+        }
+
         public static IUpdateQueryBuilder Update(string source, string connectionString)
         {
             return new UpdateQuery(source, connectionString);

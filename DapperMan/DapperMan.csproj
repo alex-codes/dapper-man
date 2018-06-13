@@ -58,6 +58,7 @@
     <Compile Include="Core\ISelectQueryBuilder.cs" />
     <Compile Include="Core\INonQuery.cs" />
     <Compile Include="Core\IQueryGenerator.cs" />
+    <Compile Include="Core\IStoredProcedureQueryBuilder.cs" />
     <Compile Include="Core\IUpdateQueryBuilder.cs" />
     <Compile Include="Core\PropertyCache.cs" />
     <Compile Include="Core\ReflectionHelper.cs" />
@@ -65,10 +66,10 @@
     <Compile Include="MsSql\CountQuery.cs" />
     <Compile Include="MsSql\DapperQuery.cs" />
     <Compile Include="MsSql\DeleteQuery.cs" />
-    <Compile Include="MsSql\FunctionQuery.cs" />
     <Compile Include="MsSql\InsertQuery.cs" />
     <Compile Include="MsSql\PageableSelectQuery.cs" />
     <Compile Include="MsSql\SelectQuery.cs" />
+    <Compile Include="MsSql\StoredProcedureQuery.cs" />
     <Compile Include="MsSql\UpdateQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
