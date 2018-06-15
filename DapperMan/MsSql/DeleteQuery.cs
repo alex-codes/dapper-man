@@ -7,22 +7,35 @@ using System.Threading.Tasks;
 
 namespace DapperMan.MsSql
 {
+    /// <summary>
+    /// Builds a query to delete data from a table.
+    /// </summary>
     public class DeleteQuery : DapperQueryBase, IDeleteQueryBuilder, IQueryGenerator
     {
         private readonly string defaultQueryTemplate = "DELETE FROM {source} {filter};";
+
+        /// <summary>
+        /// The list of filter strings to apply to the query.
+        /// </summary>
         protected List<string> Filters { get; private set; } = new List<string>();
 
         /// <summary>
-        /// Creates a new delete query
+        /// Creates a new delete query.
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
-        /// <param name="connectionString">The name of the connection strin.</param>
+        /// <param name="connectionString">The connection string to the database.</param>
         public DeleteQuery(string source, string connectionString)
             : this(source, connectionString, null)
         {
 
         }
 
+        /// <summary>
+        /// Creates a new delete query.
+        /// </summary>
+        /// <param name="source">The name and schema of the table.</param>
+        /// <param name="connectionString">The connection string to the database.</param>
+        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         public DeleteQuery(string source, string connectionString, int? commandTimeout)
             : base(connectionString)
         {
@@ -31,7 +44,7 @@ namespace DapperMan.MsSql
         }
 
         /// <summary>
-        /// Creates a new delete query
+        /// Creates a new delete query.
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
         /// <param name="connection">A connection to the database.</param>
@@ -41,6 +54,12 @@ namespace DapperMan.MsSql
 
         }
 
+        /// <summary>
+        /// Creates a new delete query.
+        /// </summary>
+        /// <param name="source">The name and schema of the table.</param>
+        /// <param name="connection">A connection to the database.</param>
+        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         public DeleteQuery(string source, IDbConnection connection, int? commandTimeout)
             : base(connection)
         {
@@ -48,16 +67,38 @@ namespace DapperMan.MsSql
             Source = source;
         }
 
+        /// <summary>
+        /// Executes the query.
+        /// </summary>
+        /// <param name="queryParameters">Parameters to pass to the statement.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// The number of rows affescted.
+        /// </returns>
         public virtual int Execute(object queryParameters = null, IDbTransaction transaction = null)
         {
             return Execute(GenerateStatement(), queryParameters, transaction: transaction);
         }
 
+        /// <summary>
+        /// Executes the query.
+        /// </summary>
+        /// <param name="queryParameters">Parameters to pass to the statement.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// The number of rows affescted.
+        /// </returns>
         public virtual async Task<int> ExecuteAsync(object queryParameters = null, IDbTransaction transaction = null)
         {
             return await ExecuteAsync(GenerateStatement(), queryParameters, transaction: transaction);
         }
 
+        /// <summary>
+        /// Generates the sql statement to be executed.
+        /// </summary>
+        /// <returns>
+        /// The completed sql statement to be executed.
+        /// </returns>
         public virtual string GenerateStatement()
         {
             string filter = string.Join(" AND ", Filters);
@@ -72,6 +113,13 @@ namespace DapperMan.MsSql
             return sql;
         }
 
+        /// <summary>
+        /// Adds a filter to the query.
+        /// </summary>
+        /// <param name="filter">The filter string to add to the query.</param>
+        /// <returns>
+        /// The IDeleteQueryBuilder instance.
+        /// </returns>
         public virtual IDeleteQueryBuilder Where(string filter)
         {
             if (string.IsNullOrWhiteSpace(filter))

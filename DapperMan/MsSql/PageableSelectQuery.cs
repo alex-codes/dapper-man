@@ -9,43 +9,92 @@ using System.Threading.Tasks;
 
 namespace DapperMan.MsSql
 {
+    /// <summary>
+    /// Build a query to select a single page of data from a table.
+    /// </summary>
     public class PageableSelectQuery : SelectQuery
     {
         private string defaultQueryTemplate = "SELECT * FROM {source} {filter} {sort} OFFSET {offset} ROWS FETCH NEXT {pageSize} ROWS ONLY;";
         private string defaultCountQueryTemplate = "SELECT COUNT(*) FROM {source} {filter};";
+
+        /// <summary>
+        /// The number of rows to skip.
+        /// </summary>
         protected int Skip { get; set; }
+
+        /// <summary>
+        /// The size of the page to take.
+        /// </summary>
         protected int Take { get; set; }
 
+        /// <summary>
+        /// Creates a new paged select query.
+        /// </summary>
+        /// <param name="source">The name and schema of the table.</param>
+        /// <param name="connectionString">The connection string to the database.</param>
         public PageableSelectQuery(string source, string connectionString)
             : this(source, connectionString, null)
         {
 
         }
 
+        /// <summary>
+        /// Creates a new paged select query.
+        /// </summary>
+        /// <param name="source">The name and schema of the table.</param>
+        /// <param name="connectionString">The connection string to the database.</param>
+        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         public PageableSelectQuery(string source, string connectionString, int? commandTimeout)
             : base(source, connectionString, commandTimeout)
         {
 
         }
 
+        /// <summary>
+        /// Creates a new paged select query.
+        /// </summary>
+        /// <param name="source">The name and schema of the table.</param>
+        /// <param name="connection">A connection to the database.</param>
         public PageableSelectQuery(string source, IDbConnection connection)
             : this(source, connection, null)
         {
 
         }
 
+        /// <summary>
+        /// Creates a new paged select query.
+        /// </summary>
+        /// <param name="source">The name and schema of the table.</param>
+        /// <param name="connection">A connection to the database.</param>
+        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         public PageableSelectQuery(string source, IDbConnection connection, int? commandTimeout)
             : base(source, connection, commandTimeout)
         {
 
         }
 
+        /// <summary>
+        /// Creates a new paged select query.
+        /// </summary>
+        /// <param name="source">The name and schema of the table.</param>
+        /// <param name="connectionString">The connection string to the database.</param>
+        /// <param name="connection">A connection to the database.</param>
+        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         internal PageableSelectQuery(string source, string connectionString, IDbConnection connection, int? commandTimeout)
             : base(source, connectionString, commandTimeout)
         {
             Connection = connection;
         }
 
+        /// <summary>
+        /// Executes the query
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="queryParameters">Parameters to pass to the statement.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// An IEnumerable representing a single page of data and the total number of rows that match the query.
+        /// </returns>
         public override (IEnumerable<T> Results, int TotalRows) Execute<T>(object queryParameters = null, IDbTransaction transaction = null)
         {
             IEnumerable<T> results = null;
@@ -62,6 +111,15 @@ namespace DapperMan.MsSql
             return (results, totalRows);
         }
 
+        /// <summary>
+        /// Executes the query
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="queryParameters">Parameters to pass to the statement.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// An IEnumerable representing a single page of data and the total number of rows that match the query.
+        /// </returns>
         public override async Task<(IEnumerable<T> Results, int TotalRows)> ExecuteAsync<T>(object queryParameters = null, IDbTransaction transaction = null)
         {
             IEnumerable<T> results = null;
@@ -78,6 +136,12 @@ namespace DapperMan.MsSql
             return (results, totalRows);
         }
 
+        /// <summary>
+        /// Generates the sql statement to be executed.
+        /// </summary>
+        /// <returns>
+        /// The completed sql statement to be executed.
+        /// </returns>
         public override string GenerateStatement()
         {
             string filter = string.Join(" AND ", Filters);
@@ -105,6 +169,14 @@ namespace DapperMan.MsSql
             return sql;
         }
 
+        /// <summary>
+        /// Sets the page size and page offset for the query.
+        /// </summary>
+        /// <param name="skip">The number of rows to skip.</param>
+        /// <param name="take">The number of rows to take.</param>
+        /// <returns>
+        /// The instance of ISelectQueryBuilder.
+        /// </returns>
         public override ISelectQueryBuilder SkipTake(int skip, int take)
         {
             if (skip < 0 || take < 0)

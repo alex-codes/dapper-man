@@ -3,11 +3,13 @@ using DapperMan.Core.Attributes;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.Caching;
 using System.Threading.Tasks;
 
 namespace DapperMan.MsSql
 {
+    /// <summary>
+    /// Build a query to insert data into a table.
+    /// </summary>
     public class InsertQuery : DapperQueryBase, IInsertQueryBuilder, IQueryGenerator
     {
         private string defaultQyeryTemplate = "INSERT INTO {source} ({fields}) VALUES ({values});";
@@ -15,11 +17,22 @@ namespace DapperMan.MsSql
         private string[] propNames = null;
         private string scopeIdentityTemplate = "SELECT CAST(SCOPE_IDENTITY() as int);";
 
+        /// <summary>
+        /// Creates a new insert query.
+        /// </summary>
+        /// <param name="source">The name and schema of the table.</param>
+        /// <param name="connectionString">The connection string to the database.</param>
         public InsertQuery(string source, string connectionString)
             : this(source, connectionString, null)
         {
         }
 
+        /// <summary>
+        /// Creates a new insert query.
+        /// </summary>
+        /// <param name="source">The name and schema of the table.</param>
+        /// <param name="connectionString">The connection string to the database.</param>
+        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         public InsertQuery(string source, string connectionString, int? commandTimeout)
            : base(connectionString)
         {
@@ -27,11 +40,22 @@ namespace DapperMan.MsSql
             Source = source;
         }
 
+        /// <summary>
+        /// Creates a new insert query.
+        /// </summary>
+        /// <param name="source">The name and schema of the table.</param>
+        /// <param name="connection">A connection to the database.</param>
         public InsertQuery(string source, IDbConnection connection)
             : this(source, connection, null)
         {
         }
 
+        /// <summary>
+        /// Creates a new insert query.
+        /// </summary>
+        /// <param name="source">The name and schema of the table.</param>
+        /// <param name="connection">A connection to the database.</param>
+        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         public InsertQuery(string source, IDbConnection connection, int? commandTimeout)
             : base(connection)
         {
@@ -39,6 +63,16 @@ namespace DapperMan.MsSql
             Source = source;
         }
 
+        /// <summary>
+        /// Executes the query.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="queryParameters">Parameters to pass to the statement.</param>
+        /// <param name="propertyCache">An object used for caching information about the typed object.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// The number of rows affescted.
+        /// </returns>
         public virtual int Execute<T>(object queryParameters = null, PropertyCache propertyCache = null, IDbTransaction transaction = null) where T : class
         {
             ReflectType<T>(propertyCache);
@@ -53,6 +87,16 @@ namespace DapperMan.MsSql
             }
         }
 
+        /// <summary>
+        /// Executes the query.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="queryParameters">Parameters to pass to the statement.</param>
+        /// <param name="propertyCache">An object used for caching information about the typed object.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// The number of rows affescted.
+        /// </returns>
         public virtual async Task<int> ExecuteAsync<T>(object queryParameters = null, PropertyCache propertyCache = null, IDbTransaction transaction = null) where T : class
         {
             ReflectType<T>(propertyCache);
@@ -68,16 +112,36 @@ namespace DapperMan.MsSql
             }
         }
 
+        /// <summary>
+        /// Formats property names for the update statement.
+        /// </summary>
+        /// <param name="props"></param>
+        /// <returns>
+        /// A string representing all formatted properties of the table.
+        /// </returns>
         protected virtual string FormatPropertyNames(string[] props)
         {
             return string.Join(",", props.Select(s => $"[{s}]"));
         }
 
+        /// <summary>
+        /// Formats parameter names for the update statement.
+        /// </summary>
+        /// <param name="props"></param>
+        /// <returns>
+        /// A string representing all formatted parameters of the query.
+        /// </returns>
         protected virtual string FormatPropertyParameters(string[] props)
         {
             return string.Join(",", props.Select(s => $"@{s}"));
         }
 
+        /// <summary>
+        /// Generates the sql statement to be executed.
+        /// </summary>
+        /// <returns>
+        /// The completed sql statement to be executed.
+        /// </returns>
         public virtual string GenerateStatement()
         {
             string sql = defaultQyeryTemplate
@@ -96,6 +160,11 @@ namespace DapperMan.MsSql
             return sql;
         }
 
+        /// <summary>
+        /// Uses reflection to determine information about the typed class.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="propertyCache">An object used for caching information about the typed object.</param>
         private void ReflectType<T>(PropertyCache propertyCache) where T : class
         {
             propNames = ReflectionHelper.ReflectProperties<T>(propertyCache, new[] { typeof(IdentityAttribute), typeof(InsertIgnoreAttribute) });

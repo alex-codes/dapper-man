@@ -8,17 +8,35 @@ using System.Threading.Tasks;
 
 namespace DapperMan.MsSql
 {
+    /// <summary>
+    /// Build a query to update data.
+    /// </summary>
     public class UpdateQuery : DapperQueryBase, IUpdateQueryBuilder, IQueryGenerator
     {
         private string defaultQyeryTemplate = "UPDATE {source} SET {fields} {filter};";
-        protected List<string> Filters { get; private set; } = new List<string>();
         private string[] propNames = null;
 
+        /// <summary>
+        /// The list of filter strings to apply to the query.
+        /// </summary>
+        protected List<string> Filters { get; private set; } = new List<string>();
+
+        /// <summary>
+        /// Creates a new update query.
+        /// </summary>
+        /// <param name="source">The name and schema of the table.</param>
+        /// <param name="connectionString">The connection string to the database.</param>
         public UpdateQuery(string source, string connectionString)
             : this(source, connectionString, null)
         {
         }
 
+        /// <summary>
+        /// Creates a new update query.
+        /// </summary>
+        /// <param name="source">The name and schema of the table.</param>
+        /// <param name="connectionString">The connection string to the database.</param>
+        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         public UpdateQuery(string source, string connectionString, int? commandTimeout)
            : base(connectionString)
         {
@@ -26,11 +44,22 @@ namespace DapperMan.MsSql
             Source = source;
         }
 
+        /// <summary>
+        /// Creates a new update query.
+        /// </summary>
+        /// <param name="source">The name and schema of the table.</param>
+        /// <param name="connection">A connection to the database.</param>
         public UpdateQuery(string source, IDbConnection connection)
             : this(source, connection, null)
         {
         }
 
+        /// <summary>
+        /// Creates a new update query.
+        /// </summary>
+        /// <param name="source">The name and schema of the table.</param>
+        /// <param name="connection">A connection to the database.</param>
+        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         public UpdateQuery(string source, IDbConnection connection, int? commandTimeout)
             : base(connection)
         {
@@ -38,18 +67,45 @@ namespace DapperMan.MsSql
             Source = source;
         }
 
+        /// <summary>
+        /// Executes the query.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="queryParameters">Parameters to pass to the statement.</param>
+        /// <param name="propertyCache">An object used for caching information about the typed object.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// The number of rows affected.
+        /// </returns>
         public virtual int Execute<T>(object queryParameters = null, PropertyCache propertyCache = null, IDbTransaction transaction = null) where T : class
         {
             ReflectType<T>(propertyCache);
             return Execute(GenerateStatement(), queryParameters, transaction: transaction);
         }
 
+        /// <summary>
+        /// Executes the query.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="queryParameters">Parameters to pass to the statement.</param>
+        /// <param name="propertyCache">An object used for caching information about the typed object.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// The number of rows affescted.
+        /// </returns>
         public virtual async Task<int> ExecuteAsync<T>(object queryParameters = null, PropertyCache propertyCache = null, IDbTransaction transaction = null) where T : class
         {
             ReflectType<T>(propertyCache);
             return await ExecuteAsync(GenerateStatement(), queryParameters, transaction: transaction);
         }
 
+        /// <summary>
+        /// Formats property names for the update statement.
+        /// </summary>
+        /// <param name="props">The list of property names to include in the sql statement.</param>
+        /// <returns>
+        /// A string representing all formatted properties of the table.
+        /// </returns>
         protected virtual string FormatPropertyNames(string[] props)
         {
             string propNames = "";
@@ -67,6 +123,12 @@ namespace DapperMan.MsSql
             return propNames;
         }
 
+        /// <summary>
+        /// Generates the sql statement to be executed.
+        /// </summary>
+        /// <returns>
+        /// The completed sql statement to be executed.
+        /// </returns>
         public virtual string GenerateStatement()
         {
             string filter = string.Join(" AND ", Filters);
@@ -82,11 +144,23 @@ namespace DapperMan.MsSql
             return sql;
         }
 
+        /// <summary>
+        /// Uses reflection to determine information about the typed class.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="propertyCache">An object used for caching information about the typed object.</param>
         private void ReflectType<T>(PropertyCache propertyCache) where T : class
         {
             propNames = ReflectionHelper.ReflectProperties<T>(propertyCache, new[] { typeof(IdentityAttribute), typeof(UpdateIgnoreAttribute) });
         }
 
+        /// <summary>
+        /// Adds a filter to the query.
+        /// </summary>
+        /// <param name="filter">The filter string to add to the query.</param>
+        /// <returns>
+        /// The IUpdateQueryBuilder instance.
+        /// </returns>
         public virtual IUpdateQueryBuilder Where(string filter)
         {
             if (string.IsNullOrWhiteSpace(filter))
