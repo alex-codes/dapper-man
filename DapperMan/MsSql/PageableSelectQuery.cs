@@ -159,7 +159,7 @@ namespace DapperMan.MsSql
             int offset = Skip;
             int pageSize = Take;
 
-            string sql = this.defaultQueryTemplate
+            string sql = defaultQueryTemplate
                 .Replace("{source}", Source)
                 .Replace("{filter}", string.IsNullOrWhiteSpace(filter) ? "" : "WHERE " + filter)
                 .Replace("{sort}", string.IsNullOrWhiteSpace(sort) ? "" : "ORDER BY " + sort)

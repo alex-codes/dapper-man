@@ -110,7 +110,7 @@ namespace DapperMan.Core
                 propertyCache.Cache.Set(cacheKey, keyName, propertyCache.Policy);
             }
 
-            return null;
+            return keyName;
         }
 
         /// <summary>

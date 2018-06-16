@@ -67,7 +67,7 @@ namespace DapperMan.MsSql
         /// Adds a filter to the query.
         /// </summary>
         /// <param name="filter">The filter string to add to the query.</param>
-        protected void AddFilter(string filter)
+        protected internal void AddFilter(string filter)
         {
             if (string.IsNullOrWhiteSpace(filter))
             {
@@ -81,7 +81,7 @@ namespace DapperMan.MsSql
         /// Adds a sort order to the query.
         /// </summary>
         /// <param name="orderBy">The column name to order by.</param>
-        public void AddSort(string orderBy)
+        protected internal void AddSort(string orderBy)
         {
             if (string.IsNullOrWhiteSpace(orderBy))
             {

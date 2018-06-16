@@ -11,7 +11,7 @@ namespace DapperMan.MsSql
     /// <summary>
     /// Build a query to update data.
     /// </summary>
-    public class UpdateQuery : SqlQueryBase, IUpdateQueryBuilder, IQueryGenerator
+    public class UpdateQuery : SqlQueryBase, IUpdateQueryBuilder, IGenericQueryGenerator
     {
         private string defaultQyeryTemplate = "UPDATE {source} SET {fields} {filter};";
         private string[] propNames = null;
@@ -138,6 +138,20 @@ namespace DapperMan.MsSql
             Debug.WriteLine(sql);
 
             return sql;
+        }
+
+        /// <summary>
+        /// Generates the sql statement to be executed.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="propertyCache">An object used for caching information about the typed object.</param>
+        /// <returns>
+        /// The completed sql statement to be executed.
+        /// </returns>
+        public string GenerateStatement<T>(PropertyCache propertyCache) where T : class
+        {
+            ReflectType<T>(propertyCache);
+            return GenerateStatement();
         }
 
         /// <summary>

@@ -11,7 +11,7 @@ namespace DapperMan.MsSql
     /// <summary>
     /// Build a query to insert data into a table.
     /// </summary>
-    public class InsertQuery : SqlQueryBase, IInsertQueryBuilder, IQueryGenerator
+    public class InsertQuery : SqlQueryBase, IInsertQueryBuilder, IGenericQueryGenerator
     {
         private string defaultQyeryTemplate = "INSERT INTO {source} ({fields}) VALUES ({values});";
         private string keyField = null;
@@ -72,15 +72,15 @@ namespace DapperMan.MsSql
         /// </returns>
         public virtual int Execute<T>(object queryParameters = null, PropertyCache propertyCache = null, IDbTransaction transaction = null) where T : class
         {
-            ReflectType<T>(propertyCache);
+            string sql = GenerateStatement<T>(propertyCache);
 
             if (!string.IsNullOrWhiteSpace(keyField))
             {
-                return Query<int>(GenerateStatement(), queryParameters, transaction: transaction).First();
+                return Query<int>(sql, queryParameters, transaction: transaction).First();
             }
             else
             {
-                return ExecuteNonQuery(GenerateStatement(), queryParameters, transaction: transaction);
+                return ExecuteNonQuery(sql, queryParameters, transaction: transaction);
             }
         }
 
@@ -96,16 +96,16 @@ namespace DapperMan.MsSql
         /// </returns>
         public virtual async Task<int> ExecuteAsync<T>(object queryParameters = null, PropertyCache propertyCache = null, IDbTransaction transaction = null) where T : class
         {
-            ReflectType<T>(propertyCache);
+            string sql = GenerateStatement<T>(propertyCache);
 
             if (!string.IsNullOrWhiteSpace(keyField))
             {
-                var result = await QueryAsync<int>(GenerateStatement(), queryParameters, transaction: transaction);
+                var result = await QueryAsync<int>(sql, queryParameters, transaction: transaction);
                 return result.First();
             }
             else
             {
-                return await ExecuteNonQueryAsync(GenerateStatement(), queryParameters, transaction: transaction);
+                return await ExecuteNonQueryAsync(sql, queryParameters, transaction: transaction);
             }
         }
 
@@ -118,7 +118,7 @@ namespace DapperMan.MsSql
         /// </returns>
         protected virtual string FormatPropertyNames(string[] props)
         {
-            return string.Join(",", props.Select(s => $"[{s}]"));
+            return string.Join(", ", props.Select(s => $"[{s}]"));
         }
 
         /// <summary>
@@ -130,7 +130,7 @@ namespace DapperMan.MsSql
         /// </returns>
         protected virtual string FormatPropertyParameters(string[] props)
         {
-            return string.Join(",", props.Select(s => $"@{s}"));
+            return string.Join(", ", props.Select(s => $"@{s}"));
         }
 
         /// <summary>
@@ -160,6 +160,20 @@ namespace DapperMan.MsSql
             Debug.WriteLine(sql);
 
             return sql;
+        }
+
+        /// <summary>
+        /// Generates the sql statement to be executed.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="propertyCache">An object used for caching information about the typed object.</param>
+        /// <returns>
+        /// The completed sql statement to be executed.
+        /// </returns>
+        public string GenerateStatement<T>(PropertyCache propertyCache) where T : class
+        {
+            ReflectType<T>(propertyCache);
+            return GenerateStatement();
         }
 
         /// <summary>
