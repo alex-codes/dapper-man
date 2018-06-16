@@ -70,6 +70,8 @@
     <Compile Include="MsSql\InsertQuery.cs" />
     <Compile Include="MsSql\PageableSelectQuery.cs" />
     <Compile Include="MsSql\SelectQuery.cs" />
+    <Compile Include="MsSql\SqlConnectionResolver.cs" />
+    <Compile Include="MsSql\SqlQueryBase.cs" />
     <Compile Include="MsSql\StoredProcedureQuery.cs" />
     <Compile Include="MsSql\UpdateQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

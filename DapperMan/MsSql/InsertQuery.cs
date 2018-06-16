@@ -10,7 +10,7 @@ namespace DapperMan.MsSql
     /// <summary>
     /// Build a query to insert data into a table.
     /// </summary>
-    public class InsertQuery : DapperQueryBase, IInsertQueryBuilder, IQueryGenerator
+    public class InsertQuery : SqlQueryBase, IInsertQueryBuilder, IQueryGenerator
     {
         private string defaultQyeryTemplate = "INSERT INTO {source} ({fields}) VALUES ({values});";
         private string keyField = null;
@@ -34,10 +34,8 @@ namespace DapperMan.MsSql
         /// <param name="connectionString">The connection string to the database.</param>
         /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         public InsertQuery(string source, string connectionString, int? commandTimeout)
-           : base(connectionString)
+           : base(source, connectionString, commandTimeout)
         {
-            CommandTimeout = commandTimeout;
-            Source = source;
         }
 
         /// <summary>
@@ -57,10 +55,8 @@ namespace DapperMan.MsSql
         /// <param name="connection">A connection to the database.</param>
         /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         public InsertQuery(string source, IDbConnection connection, int? commandTimeout)
-            : base(connection)
+            : base(source, connection, commandTimeout)
         {
-            CommandTimeout = commandTimeout;
-            Source = source;
         }
 
         /// <summary>

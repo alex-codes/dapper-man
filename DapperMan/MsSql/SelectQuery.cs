@@ -11,19 +11,9 @@ namespace DapperMan.MsSql
     /// <summary>
     /// Build a query to select data from a table.
     /// </summary>
-    public class SelectQuery : DapperQueryBase, ISelectQueryBuilder, IQueryGenerator
+    public class SelectQuery : SqlQueryBase, ISelectQueryBuilder, IQueryGenerator
     {
         private readonly string defaultQueryTemplate = "SELECT * FROM {source} {filter} {sort};";
-
-        /// <summary>
-        /// The list of filter strings to apply to the query.
-        /// </summary>
-        protected List<string> Filters { get; private set; } = new List<string>();
-
-        /// <summary>
-        /// The list of sort order strings to apply to the query.
-        /// </summary>
-        protected List<string> SortOrders { get; private set; } = new List<string>();
 
         /// <summary>
         /// Creates a new select query
@@ -33,7 +23,6 @@ namespace DapperMan.MsSql
         public SelectQuery(string source, string connectionString)
             : this(source, connectionString, null)
         {
-
         }
 
         /// <summary>
@@ -43,10 +32,8 @@ namespace DapperMan.MsSql
         /// <param name="connectionString">The connection string to the database.</param>
         /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         public SelectQuery(string source, string connectionString, int? commandTimeout)
-            : base(connectionString)
+            : base(source, connectionString, commandTimeout)
         {
-            CommandTimeout = commandTimeout;
-            Source = source;
         }
 
         /// <summary>
@@ -57,7 +44,6 @@ namespace DapperMan.MsSql
         public SelectQuery(string source, IDbConnection connection)
             : this(source, connection, null)
         {
-
         }
 
         /// <summary>
@@ -67,10 +53,8 @@ namespace DapperMan.MsSql
         /// <param name="connection">A connection to the database.</param>
         /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         public SelectQuery(string source, IDbConnection connection, int? commandTimeout)
-            : base(connection)
+            : base(source, connection, commandTimeout)
         {
-            CommandTimeout = commandTimeout;
-            Source = source;
         }
 
         /// <summary>
@@ -134,12 +118,7 @@ namespace DapperMan.MsSql
         /// </returns>
         public virtual ISelectQueryBuilder OrderBy(string orderBy)
         {
-            if (string.IsNullOrWhiteSpace(orderBy))
-            {
-                throw new ArgumentNullException(nameof(orderBy));
-            }
-
-            SortOrders.Add(orderBy);
+            AddSort(orderBy);
             return this;
         }
 
@@ -177,12 +156,7 @@ namespace DapperMan.MsSql
         /// </returns>
         public virtual ISelectQueryBuilder Where(string filter)
         {
-            if (string.IsNullOrWhiteSpace(filter))
-            {
-                throw new ArgumentNullException(nameof(filter));
-            }
-
-            Filters.Add(filter);
+            AddFilter(filter);
             return this;
         }
     }

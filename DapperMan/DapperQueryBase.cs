@@ -171,18 +171,7 @@ namespace DapperMan.MsSql
         /// <returns>
         /// An instance of <see cref="SqlConnection"/>
         /// </returns>
-        protected virtual IDbConnection ResolveConnection(bool autoOpen = true)
-        {
-            if (Connection != null)
-            {
-                return Connection;
-            }
-
-            var conn = new SqlConnection(ConnectionString);
-            conn.Open();
-
-            return conn;
-        }
+        protected abstract IDbConnection ResolveConnection(bool autoOpen = true);
 
         /// <summary>
         /// Gets the connection to the database.
@@ -191,22 +180,6 @@ namespace DapperMan.MsSql
         /// <returns>
         /// An instance of <see cref="SqlConnection"/>
         /// </returns>
-        protected async virtual Task<IDbConnection> ResolveConnectionAsync(bool autoOpen = true)
-        {
-            if (Connection != null)
-            {
-                if (Connection.State != ConnectionState.Open)
-                {
-                    Connection.Open();
-                }
-
-                return Connection;
-            }
-
-            var conn = new SqlConnection(ConnectionString);
-            await conn.OpenAsync();
-
-            return conn;
-        }
+        protected abstract Task<IDbConnection> ResolveConnectionAsync(bool autoOpen = true);
     }
 }

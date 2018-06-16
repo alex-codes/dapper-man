@@ -9,7 +9,7 @@ namespace DapperMan.MsSql
     /// <summary>
     /// Run a stored procedure.
     /// </summary>
-    public class StoredProcedureQuery : DapperQueryBase, IStoredProcedureQueryBuilder
+    public class StoredProcedureQuery : SqlQueryBase, IStoredProcedureQueryBuilder
     {
         //TODO: is there a way to easily handle output parameters?
 
@@ -40,9 +40,8 @@ namespace DapperMan.MsSql
         /// <param name="connectionString">The connection string to the database.</param>
         /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         public StoredProcedureQuery(string procedureName, string connectionString, int? commandTimeout)
-           : base(connectionString)
+           : base(null, connectionString, commandTimeout)
         {
-            CommandTimeout = commandTimeout;
             ProcedureName = procedureName;
         }
 
@@ -63,9 +62,8 @@ namespace DapperMan.MsSql
         /// <param name="connection">A connection to the database.</param>
         /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         public StoredProcedureQuery(string procedureName, IDbConnection connection, int? commandTimeout)
-            : base(connection)
+            : base(null, connection, commandTimeout)
         {
-            CommandTimeout = commandTimeout;
             ProcedureName = procedureName;
         }
 

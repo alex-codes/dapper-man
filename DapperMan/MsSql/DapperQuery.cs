@@ -6,14 +6,14 @@ namespace DapperMan.MsSql
     /// <summary>
     /// A basic query abstraction.
     /// </summary>
-    public class DapperQuery : DapperQueryBase
+    public class DapperQuery : SqlQueryBase
     {
         /// <summary>
         /// Creates a new instance of DapperQuery.
         /// </summary>
         /// <param name="connectionString">The connection string to the database.</param>
         public DapperQuery(string connectionString)
-            : base(connectionString)
+            : base(null, connectionString)
         {
 
         }
@@ -23,7 +23,7 @@ namespace DapperMan.MsSql
         /// </summary>
         /// <param name="connection">A connection to the database.</param>
         public DapperQuery(IDbConnection connection)
-            : base(connection)
+            : base(null, connection)
         {
 
         }
