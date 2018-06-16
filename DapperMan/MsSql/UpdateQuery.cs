@@ -80,7 +80,7 @@ namespace DapperMan.MsSql
         public virtual int Execute<T>(object queryParameters = null, PropertyCache propertyCache = null, IDbTransaction transaction = null) where T : class
         {
             ReflectType<T>(propertyCache);
-            return Execute(GenerateStatement(), queryParameters, transaction: transaction);
+            return ExecuteNonQuery(GenerateStatement(), queryParameters, transaction: transaction);
         }
 
         /// <summary>
@@ -96,7 +96,7 @@ namespace DapperMan.MsSql
         public virtual async Task<int> ExecuteAsync<T>(object queryParameters = null, PropertyCache propertyCache = null, IDbTransaction transaction = null) where T : class
         {
             ReflectType<T>(propertyCache);
-            return await ExecuteAsync(GenerateStatement(), queryParameters, transaction: transaction);
+            return await ExecuteNonQueryAsync(GenerateStatement(), queryParameters, transaction: transaction);
         }
 
         /// <summary>

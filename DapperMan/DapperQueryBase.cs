@@ -65,7 +65,7 @@ namespace DapperMan.MsSql
         /// <returns>
         /// The result from executing the query, typically the number of rows affected.
         /// </returns>
-        public virtual int Execute(string query, object param = null, CommandType commandType = CommandType.Text, IDbTransaction transaction = null)
+        public virtual int ExecuteNonQuery(string query, object param = null, CommandType commandType = CommandType.Text, IDbTransaction transaction = null)
         {
             using (var conn = ResolveConnection())
             {
@@ -83,7 +83,7 @@ namespace DapperMan.MsSql
         /// <returns>
         /// The result from executing the query, typically the number of rows affected.
         /// </returns>
-        public async virtual Task<int> ExecuteAsync(string query, object param = null, CommandType commandType = CommandType.Text, IDbTransaction transaction = null)
+        public async virtual Task<int> ExecuteNonQueryAsync(string query, object param = null, CommandType commandType = CommandType.Text, IDbTransaction transaction = null)
         {
             using (var conn = await ResolveConnectionAsync())
             {

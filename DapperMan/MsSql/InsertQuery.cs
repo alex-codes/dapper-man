@@ -83,7 +83,7 @@ namespace DapperMan.MsSql
             }
             else
             {
-                return Execute(GenerateStatement(), queryParameters, transaction: transaction);
+                return ExecuteNonQuery(GenerateStatement(), queryParameters, transaction: transaction);
             }
         }
 
@@ -108,7 +108,7 @@ namespace DapperMan.MsSql
             }
             else
             {
-                return await ExecuteAsync(GenerateStatement(), queryParameters, transaction: transaction);
+                return await ExecuteNonQueryAsync(GenerateStatement(), queryParameters, transaction: transaction);
             }
         }
 

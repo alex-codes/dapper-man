@@ -273,12 +273,10 @@ public (IEnumerable<T> Results, int TotalRows) Execute<T>()
 public Task<(IEnumerable<T> Results, int TotalRows)> ExecuteAsync<T>()
 
 //DapperQueryBase signatures (params removed for brevity)
-public int Execute()
-public Task<int> ExecuteAsync()
-
+public int ExecuteNonQuery()
+public Task<int> ExecuteNonQueryAsync()
 public IEnumerable<T> Query<T>()
 public Task<IEnumerable<T>> QueryAsync<T>()
-
 public void QueryMultiple()
 public Task QueryMultipleAsync()
 ```
@@ -334,5 +332,5 @@ var results = DapperQuery.Create(connectionString)
 // or, if the sql statement is not a select statement
 
 int count = DapperQuery.Create(connectionString)
-    .Execute(sql, new { your params });
+    .ExecuteNonQuery(sql, new { your params });
 ```

@@ -79,7 +79,7 @@ namespace DapperMan.MsSql
         /// </returns>
         public virtual int Execute(object queryParameters = null, IDbTransaction transaction = null)
         {
-            return base.Execute(ProcedureName, queryParameters, commandType: CommandType.StoredProcedure, transaction: transaction);
+            return base.ExecuteNonQuery(ProcedureName, queryParameters, commandType: CommandType.StoredProcedure, transaction: transaction);
         }
 
         /// <summary>
@@ -92,7 +92,7 @@ namespace DapperMan.MsSql
         /// </returns>
         public virtual async Task<int> ExecuteAsync(object queryParameters = null, IDbTransaction transaction = null)
         {
-            int result = await base.ExecuteAsync(ProcedureName, queryParameters, commandType: CommandType.StoredProcedure, transaction: transaction);
+            int result = await base.ExecuteNonQueryAsync(ProcedureName, queryParameters, commandType: CommandType.StoredProcedure, transaction: transaction);
             return result;
         }
 
