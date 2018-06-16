@@ -91,6 +91,11 @@ namespace DapperMan.MsSql
         /// </returns>
         public virtual string GenerateStatement()
         {
+            if (string.IsNullOrWhiteSpace(Source))
+            {
+                throw new ArgumentNullException(nameof(Source));
+            }
+
             string filter = string.Join(" AND ", Filters);
 
             string sql = defaultQueryTemplate

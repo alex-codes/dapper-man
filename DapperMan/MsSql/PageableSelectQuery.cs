@@ -144,6 +144,16 @@ namespace DapperMan.MsSql
         /// </returns>
         public override string GenerateStatement()
         {
+            if (string.IsNullOrWhiteSpace(Source))
+            {
+                throw new ArgumentNullException(nameof(Source));
+            }
+
+            if (SortOrders.Count == 0)
+            {
+                throw new ArgumentException("You must provide a sort order prior to selecting a page of data.");
+            }
+
             string filter = string.Join(" AND ", Filters);
             string sort = string.Join(", ", SortOrders);
             int offset = Skip;

@@ -1,4 +1,5 @@
 ﻿using DapperMan.Core;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -77,6 +78,11 @@ namespace DapperMan.MsSql
         /// </returns>
         public virtual int Execute(object queryParameters = null, IDbTransaction transaction = null)
         {
+            if (string.IsNullOrWhiteSpace(ProcedureName))
+            {
+                throw new ArgumentNullException(nameof(ProcedureName));
+            }
+
             return base.ExecuteNonQuery(ProcedureName, queryParameters, commandType: CommandType.StoredProcedure, transaction: transaction);
         }
 
@@ -90,6 +96,11 @@ namespace DapperMan.MsSql
         /// </returns>
         public virtual async Task<int> ExecuteAsync(object queryParameters = null, IDbTransaction transaction = null)
         {
+            if (string.IsNullOrWhiteSpace(ProcedureName))
+            {
+                throw new ArgumentNullException(nameof(ProcedureName));
+            }
+
             int result = await base.ExecuteNonQueryAsync(ProcedureName, queryParameters, commandType: CommandType.StoredProcedure, transaction: transaction);
             return result;
         }
@@ -105,6 +116,11 @@ namespace DapperMan.MsSql
         /// </returns>
         public virtual (IEnumerable<T> Results, int ReturnValue) Execute<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class
         {
+            if (string.IsNullOrWhiteSpace(ProcedureName))
+            {
+                throw new ArgumentNullException(nameof(ProcedureName));
+            }
+
             var results = Query<T>(ProcedureName, queryParameters, commandType: CommandType.StoredProcedure, transaction: transaction);
             return (results, results.Count());
         }
@@ -120,6 +136,11 @@ namespace DapperMan.MsSql
         /// </returns>
         public virtual async Task<(IEnumerable<T> Results, int ReturnValue)> ExecuteAsync<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class
         {
+            if (string.IsNullOrWhiteSpace(ProcedureName))
+            {
+                throw new ArgumentNullException(nameof(ProcedureName));
+            }
+
             var results = await QueryAsync<T>(ProcedureName, queryParameters, commandType: CommandType.StoredProcedure, transaction: transaction);
             return (results, results.Count());
         }

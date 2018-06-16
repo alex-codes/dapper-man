@@ -1,5 +1,6 @@
 ﻿using DapperMan.Core;
 using DapperMan.Core.Attributes;
+using System;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
@@ -140,6 +141,11 @@ namespace DapperMan.MsSql
         /// </returns>
         public virtual string GenerateStatement()
         {
+            if (string.IsNullOrWhiteSpace(Source))
+            {
+                throw new ArgumentNullException(nameof(Source));
+            }
+
             string sql = defaultQyeryTemplate
                 .Replace("{source}", Source)
                 .Replace("{fields}", FormatPropertyNames(propNames))
