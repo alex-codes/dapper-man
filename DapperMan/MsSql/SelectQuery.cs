@@ -118,7 +118,7 @@ namespace DapperMan.MsSql
                 .Replace("{source}", Source)
                 .Replace("{filter}", string.IsNullOrWhiteSpace(filter) ? "" : "WHERE " + filter)
                 .Replace("{sort}", string.IsNullOrWhiteSpace(sort) ? "" : "ORDER BY " + sort)
-                .Replace("  ", "");
+                .TrimEmptySpace();
 
             Debug.WriteLine(sql);
 

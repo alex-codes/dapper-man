@@ -137,7 +137,7 @@ namespace DapperMan.MsSql
                 .Replace("{source}", Source)
                 .Replace("{fields}", FormatPropertyNames(propNames))
                 .Replace("{filter}", string.IsNullOrWhiteSpace(filter) ? "" : "WHERE " + filter)
-                .Replace("  ", "");
+                .TrimEmptySpace();
 
             Debug.WriteLine(sql);
 

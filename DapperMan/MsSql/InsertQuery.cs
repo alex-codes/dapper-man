@@ -148,7 +148,7 @@ namespace DapperMan.MsSql
                 .Replace("{source}", Source)
                 .Replace("{fields}", FormatPropertyNames(propNames))
                 .Replace("{values}", FormatPropertyParameters(propNames))
-                .Replace("  ", "");
+                .TrimEmptySpace();
 
             if (!string.IsNullOrWhiteSpace(keyField))
             {

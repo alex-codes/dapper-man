@@ -144,7 +144,7 @@ namespace DapperMan.MsSql
             string sql = defaultQueryTemplate
                 .Replace("{source}", ProcedureName)
                 .Replace("{params}", parameters)
-                .Replace("  ", "");
+                .TrimEmptySpace();
 
             Debug.WriteLine(sql);
 

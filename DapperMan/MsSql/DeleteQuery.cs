@@ -106,7 +106,7 @@ namespace DapperMan.MsSql
             string sql = this.defaultQueryTemplate
                 .Replace("{source}", Source)
                 .Replace("{filter}", string.IsNullOrWhiteSpace(filter) ? "" : "WHERE " + filter)
-                .Replace("  ", "");
+                .TrimEmptySpace();
 
             Debug.WriteLine(sql);
 

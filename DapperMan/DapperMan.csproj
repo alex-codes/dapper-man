@@ -51,6 +51,7 @@
     <Compile Include="Core\Attributes\IdentityAttribute.cs" />
     <Compile Include="Core\Attributes\InsertIgnoreAttribute.cs" />
     <Compile Include="Core\Attributes\UpdateIgnoreAttribute.cs" />
+    <Compile Include="Core\Extensions\StringExtensions.cs" />
     <Compile Include="Core\ICacheableNonQuery.cs" />
     <Compile Include="Core\ICountQueryBuilder.cs" />
     <Compile Include="Core\IDeleteQueryBuilder.cs" />

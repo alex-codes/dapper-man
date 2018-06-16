@@ -155,12 +155,12 @@ namespace DapperMan.MsSql
                 .Replace("{sort}", string.IsNullOrWhiteSpace(sort) ? "" : "ORDER BY " + sort)
                 .Replace("{offset}", offset.ToString())
                 .Replace("{pageSize}", pageSize.ToString())
-                .Replace("  ", "");
+                .TrimEmptySpace();
 
             string rowCountSql = defaultCountQueryTemplate
                 .Replace("{source}", Source)
                 .Replace("{filter}", string.IsNullOrWhiteSpace(filter) ? "" : "WHERE " + filter)
-                .Replace("  ", "");
+                .TrimEmptySpace();
 
             sql += rowCountSql;
 
