@@ -8,7 +8,8 @@ A simple set of wrappers for [Dapper](https://github.com/StackExchange/Dapper) t
 This generates a simple select statement. The result is an `IEnumerable<T>`, and `TotalRows` represents the length of the results.
 
 ```
-(IEnumerable<Department> depts, int totalRows) = DapperQuery.Select("HumanResources.Department", connectionString)
+(IEnumerable<Department> depts, int totalRows) = DapperQuery
+    .Select("HumanResources.Department", connectionString)
     .Where("GroupName = @groupName")
     .Where("DepartmentName != @excludeDept")
     .OrderBy("GroupName")
@@ -36,7 +37,8 @@ ORDER BY GroupName, DepartmentName
 You can also select all rows by excluding the `Where`:
 
 ```
-(IEnumerable<Department> depts, int totalRows) = DapperQuery.Select("HumanResources.Department", connectionString)
+(IEnumerable<Department> depts, int totalRows) = DapperQuery
+    .Select("HumanResources.Department", connectionString)
     .OrderBy("DepartmentName")
     .Execute<Department>();
 ```
@@ -47,7 +49,8 @@ You can also select all rows by excluding the `Where`:
 This will generate a statement that gives you a specific page of data. You must provide an `OrderBy` in order for paging to function. `TotalRows` for a paging operation is the total number of records that match the filter, not the total number of records in the data set.
 
 ```
-(var results, int totalRows) = DapperQuery.Select("HumanResources.Department", connectionString)
+(var results, int totalRows) = DapperQuery
+    .Select("HumanResources.Department", connectionString)
     .Where("GroupName != @excludeGroup")
     .OrderBy("Name")
     .SkipTake(5, 5)
@@ -59,7 +62,8 @@ In the above, the first 5 rows are skipped, and then a page of 5 results is take
 You can also use the `PageableSelect` factory method. This functions exactly the same as above:
 
 ```
-(var results, int totalRows) = DapperQuery.PageableSelect("HumanResources.Department", connectionString)
+(var results, int totalRows) = DapperQuery
+    .PageableSelect("HumanResources.Department", connectionString)
     .Where("GroupName != @excludeGroup")
     .OrderBy("Name")
     .SkipTake(5, 5)
@@ -72,7 +76,8 @@ You can also use the `PageableSelect` factory method. This functions exactly the
 You can generate a simple count statement:
 
 ```
-int count = DapperQuery.Count("HumanResources.Department", connectionString)
+int count = DapperQuery
+    .Count("HumanResources.Department", connectionString)
     .Where("GroupName = @name")
     .Execute(new { name = "Executive General and Administration" });
 ```
@@ -92,7 +97,8 @@ public class Department
     ...
 }
 
-int id = DapperQuery.Insert("HumanResources.Department", connectionString)
+int id = DapperQuery
+    .Insert("HumanResources.Department", connectionString)
     .Execute<Department>(new Department());
 ```
 
@@ -102,7 +108,8 @@ You can also insert a list of objects:
 var depts = new List<Department>();
 depts.Add(); // add departments
 
-DapperQuery.Insert("HumanResources.Department", connectionString)
+int rowsAffected = DapperQuery
+    .Insert("HumanResources.Department", connectionString)
     .Execute<Department>(depts);
 ```
 
@@ -116,7 +123,8 @@ A field can be decorated with both an `[InsertIgnore]` and `[UpdateIgnore]` and 
 If you do not have an identity column, you do not need to use the `[Identity]` attribute.
 
 ```
-int rowsUpdated = DapperQuery.Update("HumanResources.Department", connectionString)
+int rowsUpdated = DapperQuery
+    .Update("HumanResources.Department", connectionString)
     .Where("DepartmentId = @departmentId")
     .Execute<Department>(
         new Department()
@@ -135,15 +143,17 @@ You can also update a list of objects:
 var depts = new List<Department>();
 depts.Add(); // add departments
 
-DapperQuery.Update("HumanResources.Department", connectionString)
+int rowsAffected = DapperQuery
+    .Update("HumanResources.Department", connectionString)
     .Where("DepartmentId = @departmentId")
     .Execute<Department>(depts);
 ```
 
-If you don't specify a `Where` clause, all records will be updated. In this instance, DepartmentId is an `[Identity]` field, so it will not be updated, but all other fields will be modified:
+If you don't specify a `Where` clause, all records will be updated. In this instance, DepartmentId is an `[Identity]` field, so it will not be updated, but all other fields will be modified to match the input parameters:
 
 ```
-DapperQuery.Update("HumanResources.Department", connectionString)
+DapperQuery
+    .Update("HumanResources.Department", connectionString)
     .Execute<Department>(
         new Department()
         {
@@ -172,7 +182,8 @@ public class YourBusinessLayer
 
     public void Insert(Department dept)
     {
-        dept.DepartmentId = DapperQuery.Insert("HumanResources.Department", connectionString)
+        dept.DepartmentId = DapperQuery
+            .Insert("HumanResources.Department", connectionString)
             .Execute<Department>(dept, cache);
     }
 }
@@ -184,7 +195,8 @@ public class YourBusinessLayer
 To delete a record:
 
 ```
-int rowsDeleted = DapperQuery.Delete("HumanResources.Department", connectionString)
+int rowsDeleted = DapperQuery
+    .Delete("HumanResources.Department", connectionString)
     .Where("DepartmentId = @id")
     .Execute(new { id = 17 });
 ```
@@ -195,7 +207,8 @@ To delete a list of records:
 var ids = new List<int>();
 // add ids
 
-DapperQuery.Delete("HumanResources.Department", connectionString)
+int rowsAffected = DapperQuery
+    .Delete("HumanResources.Department", connectionString)
     .Where("DepartmentId = @id")
     .Execute(ids);
 ```
@@ -203,7 +216,8 @@ DapperQuery.Delete("HumanResources.Department", connectionString)
 Or if you prefer, this will delete all records:
 
 ```
-DapperQuery.Delete("HumanResources.Department", connectionString)
+int rowsAffected = DapperQuery
+    .Delete("HumanResources.Department", connectionString)
     .Execute();
 ```
 
@@ -213,7 +227,8 @@ DapperQuery.Delete("HumanResources.Department", connectionString)
 To execute a stored procedure:
 
 ```
-(var results, int rowCount) = await DapperQuery.StoredProcedure("[dbo].[uspGetManagerEmployees]", connectionString)
+(var results, int rowCount) = await DapperQuery
+    .StoredProcedure("[dbo].[uspGetManagerEmployees]", connectionString)
     .ExecuteAsync<GetManagerEmployeesResult>(new
     {
         BusinessEntityId = 2

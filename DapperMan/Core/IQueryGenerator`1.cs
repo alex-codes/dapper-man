@@ -8,7 +8,7 @@
         /// <summary>
         /// Generates the sql statement to be executed.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type to return</typeparam>
         /// <param name="propertyCache">An object used for caching information about the typed object.</param>
         /// <returns>
         /// The completed sql statement to be executed.

@@ -94,7 +94,7 @@ namespace DapperMan.MsSql
         /// <summary>
         /// Executes a query.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type to return</typeparam>
         /// <param name="query">The sql statement to execute.</param>
         /// <param name="param">An object to which the query parameters are mapped.</param>
         /// <param name="commandType">The sql command type.</param>
@@ -113,7 +113,125 @@ namespace DapperMan.MsSql
         /// <summary>
         /// Executes a query.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T1">The first type of the record set.</typeparam>
+        /// <typeparam name="T2">The second type of the record set.</typeparam>
+        /// <typeparam name="TResult">The type to return.</typeparam>
+        /// <param name="query">The sql statement to execute.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="splitOn">The field used to split the results in order to map the second object.</param>
+        /// <param name="param">An object to which the query parameters are mapped.</param>
+        /// <param name="commandType">The sql command type.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// An IEnumerable of data.
+        /// </returns>
+        public virtual IEnumerable<TResult> Query<T1, T2, TResult>(string query,
+            Func<T1, T2, TResult> map,
+            string splitOn = "Id",
+            object param = null,
+            CommandType commandType = CommandType.Text,
+            IDbTransaction transaction = null)
+        {
+            using (var conn = ResolveConnection())
+            {
+                return conn.Query(query, map, splitOn: splitOn, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
+            }
+        }
+
+        /// <summary>
+        /// Executes a query.
+        /// </summary>
+        /// <typeparam name="T1">The first type of the record set.</typeparam>
+        /// <typeparam name="T2">The second type of the record set.</typeparam>
+        /// <typeparam name="T3">The third type of the record set.</typeparam>
+        /// <typeparam name="TResult">The type to return.</typeparam>
+        /// <param name="query">The sql statement to execute.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="splitOn">The field used to split the results in order to map the second object.</param>
+        /// <param name="param">An object to which the query parameters are mapped.</param>
+        /// <param name="commandType">The sql command type.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// An IEnumerable of data.
+        /// </returns>
+        public virtual IEnumerable<TResult> Query<T1, T2, T3, TResult>(string query,
+            Func<T1, T2, T3, TResult> map,
+            string splitOn = "Id",
+            object param = null,
+            CommandType commandType = CommandType.Text,
+            IDbTransaction transaction = null)
+        {
+            using (var conn = ResolveConnection())
+            {
+                return conn.Query(query, map, splitOn: splitOn, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
+            }
+        }
+
+        /// <summary>
+        /// Executes a query.
+        /// </summary>
+        /// <typeparam name="T1">The first type of the record set.</typeparam>
+        /// <typeparam name="T2">The second type of the record set.</typeparam>
+        /// <typeparam name="T3">The third type of the record set.</typeparam>
+        /// <typeparam name="T4">The fourth type of the record set.</typeparam>
+        /// <typeparam name="TResult">The type to return.</typeparam>
+        /// <param name="query">The sql statement to execute.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="splitOn">The field used to split the results in order to map the second object.</param>
+        /// <param name="param">An object to which the query parameters are mapped.</param>
+        /// <param name="commandType">The sql command type.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// An IEnumerable of data.
+        /// </returns>
+        public virtual IEnumerable<TResult> Query<T1, T2, T3, T4, TResult>(string query,
+            Func<T1, T2, T3, T4, TResult> map,
+            string splitOn = "Id",
+            object param = null,
+            CommandType commandType = CommandType.Text,
+            IDbTransaction transaction = null)
+        {
+            using (var conn = ResolveConnection())
+            {
+                return conn.Query(query, map, splitOn: splitOn, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
+            }
+        }
+
+        /// <summary>
+        /// Executes a query.
+        /// </summary>
+        /// <typeparam name="T1">The first type of the record set.</typeparam>
+        /// <typeparam name="T2">The second type of the record set.</typeparam>
+        /// <typeparam name="T3">The third type of the record set.</typeparam>
+        /// <typeparam name="T4">The fourth type of the record set.</typeparam>
+        /// <typeparam name="T5">The fifth type of the record set.</typeparam>
+        /// <typeparam name="TResult">The type to return.</typeparam>
+        /// <param name="query">The sql statement to execute.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="splitOn">The field used to split the results in order to map the second object.</param>
+        /// <param name="param">An object to which the query parameters are mapped.</param>
+        /// <param name="commandType">The sql command type.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// An IEnumerable of data.
+        /// </returns>
+        public virtual IEnumerable<TResult> Query<T1, T2, T3, T4, T5, TResult>(string query,
+            Func<T1, T2, T3, T4, T5, TResult> map,
+            string splitOn = "Id",
+            object param = null,
+            CommandType commandType = CommandType.Text,
+            IDbTransaction transaction = null)
+        {
+            using (var conn = ResolveConnection())
+            {
+                return conn.Query(query, map, splitOn: splitOn, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
+            }
+        }
+
+        /// <summary>
+        /// Executes a query.
+        /// </summary>
+        /// <typeparam name="T">The type to return</typeparam>
         /// <param name="query">The sql statement to execute.</param>
         /// <param name="param">An object to which the query parameters are mapped.</param>
         /// <param name="commandType">The sql command type.</param>
@@ -126,6 +244,124 @@ namespace DapperMan.MsSql
             using (var conn = await ResolveConnectionAsync())
             {
                 return await conn.QueryAsync<T>(sql: query, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
+            }
+        }
+
+        /// <summary>
+        /// Executes a query.
+        /// </summary>
+        /// <typeparam name="T1">The first type of the record set.</typeparam>
+        /// <typeparam name="T2">The second type of the record set.</typeparam>
+        /// <typeparam name="TResult">The type to return.</typeparam>
+        /// <param name="query">The sql statement to execute.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="splitOn">The field used to split the results in order to map the second object.</param>
+        /// <param name="param">An object to which the query parameters are mapped.</param>
+        /// <param name="commandType">The sql command type.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// An IEnumerable of data.
+        /// </returns>
+        public async virtual Task<IEnumerable<TResult>> QueryAsync<T1, T2, TResult>(string query,
+            Func<T1, T2, TResult> map,
+            string splitOn = "Id",
+            object param = null,
+            CommandType commandType = CommandType.Text,
+            IDbTransaction transaction = null)
+        {
+            using (var conn = await ResolveConnectionAsync())
+            {
+                return await conn.QueryAsync(query, map, splitOn: splitOn, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
+            }
+        }
+
+        /// <summary>
+        /// Executes a query.
+        /// </summary>
+        /// <typeparam name="T1">The first type of the record set.</typeparam>
+        /// <typeparam name="T2">The second type of the record set.</typeparam>
+        /// <typeparam name="T3">The third type of the record set.</typeparam>
+        /// <typeparam name="TResult">The type to return.</typeparam>
+        /// <param name="query">The sql statement to execute.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="splitOn">The field used to split the results in order to map the second object.</param>
+        /// <param name="param">An object to which the query parameters are mapped.</param>
+        /// <param name="commandType">The sql command type.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// An IEnumerable of data.
+        /// </returns>
+        public async virtual Task<IEnumerable<TResult>> QueryAsync<T1, T2, T3, TResult>(string query,
+            Func<T1, T2, T3, TResult> map,
+            string splitOn = "Id",
+            object param = null,
+            CommandType commandType = CommandType.Text,
+            IDbTransaction transaction = null)
+        {
+            using (var conn = await ResolveConnectionAsync())
+            {
+                return await conn.QueryAsync(query, map, splitOn: splitOn, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
+            }
+        }
+
+        /// <summary>
+        /// Executes a query.
+        /// </summary>
+        /// <typeparam name="T1">The first type of the record set.</typeparam>
+        /// <typeparam name="T2">The second type of the record set.</typeparam>
+        /// <typeparam name="T3">The third type of the record set.</typeparam>
+        /// <typeparam name="T4">The fourth type of the record set.</typeparam>
+        /// <typeparam name="TResult">The type to return.</typeparam>
+        /// <param name="query">The sql statement to execute.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="splitOn">The field used to split the results in order to map the second object.</param>
+        /// <param name="param">An object to which the query parameters are mapped.</param>
+        /// <param name="commandType">The sql command type.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// An IEnumerable of data.
+        /// </returns>
+        public async virtual Task<IEnumerable<TResult>> QueryAsync<T1, T2, T3, T4, TResult>(string query,
+            Func<T1, T2, T3, T4, TResult> map,
+            string splitOn = "Id",
+            object param = null,
+            CommandType commandType = CommandType.Text,
+            IDbTransaction transaction = null)
+        {
+            using (var conn = await ResolveConnectionAsync())
+            {
+                return await conn.QueryAsync(query, map, splitOn: splitOn, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
+            }
+        }
+
+        /// <summary>
+        /// Executes a query.
+        /// </summary>
+        /// <typeparam name="T1">The first type of the record set.</typeparam>
+        /// <typeparam name="T2">The second type of the record set.</typeparam>
+        /// <typeparam name="T3">The third type of the record set.</typeparam>
+        /// <typeparam name="T4">The fourth type of the record set.</typeparam>
+        /// <typeparam name="T5">The fifth type of the record set.</typeparam>
+        /// <typeparam name="TResult">The type to return.</typeparam>
+        /// <param name="query">The sql statement to execute.</param>
+        /// <param name="map">The function to map row types to the return type.</param>
+        /// <param name="splitOn">The field used to split the results in order to map the second object.</param>
+        /// <param name="param">An object to which the query parameters are mapped.</param>
+        /// <param name="commandType">The sql command type.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// An IEnumerable of data.
+        /// </returns>
+        public async virtual Task<IEnumerable<TResult>> QueryAsync<T1, T2, T3, T4, T5, TResult>(string query,
+            Func<T1, T2, T3, T4, T5, TResult> map,
+            string splitOn = "Id",
+            object param = null,
+            CommandType commandType = CommandType.Text,
+            IDbTransaction transaction = null)
+        {
+            using (var conn = await ResolveConnectionAsync())
+            {
+                return await conn.QueryAsync(query, map, splitOn: splitOn, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
             }
         }
 

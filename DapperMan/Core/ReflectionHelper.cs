@@ -15,7 +15,7 @@ namespace DapperMan.Core
         /// <summary>
         /// Identifies the field decorated with an <see cref="IdentityAttribute"/>
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type to return</typeparam>
         /// <param name="propertyCache">An object used for caching information about the typed object.</param>
         /// <returns>
         /// The name of the property decorated with an <see cref="IdentityAttribute"/>, or null.
@@ -153,7 +153,7 @@ namespace DapperMan.Core
         /// <summary>
         /// Reflects the properties of a given object and returns a list of property names.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type to return</typeparam>
         /// <param name="propertyCache">An object used for caching information about the typed object.</param>
         /// <param name="ignoreAttributes">A list of attribute types. 
         /// If the property is decorated with one of the supplied attributes, 

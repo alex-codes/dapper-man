@@ -61,7 +61,7 @@ namespace DapperMan.MsSql
         /// <summary>
         /// Executes the query.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type to return</typeparam>
         /// <param name="queryParameters">Parameters to pass to the statement.</param>
         /// <param name="propertyCache">An object used for caching information about the typed object.</param>
         /// <param name="transaction">An active database transaction used for rollbacks.</param>
@@ -77,7 +77,7 @@ namespace DapperMan.MsSql
         /// <summary>
         /// Executes the query.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type to return</typeparam>
         /// <param name="queryParameters">Parameters to pass to the statement.</param>
         /// <param name="propertyCache">An object used for caching information about the typed object.</param>
         /// <param name="transaction">An active database transaction used for rollbacks.</param>
@@ -143,7 +143,7 @@ namespace DapperMan.MsSql
         /// <summary>
         /// Generates the sql statement to be executed.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type to return</typeparam>
         /// <param name="propertyCache">An object used for caching information about the typed object.</param>
         /// <returns>
         /// The completed sql statement to be executed.
@@ -157,7 +157,7 @@ namespace DapperMan.MsSql
         /// <summary>
         /// Uses reflection to determine information about the typed class.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type to return</typeparam>
         /// <param name="propertyCache">An object used for caching information about the typed object.</param>
         private void ReflectType<T>(PropertyCache propertyCache) where T : class
         {

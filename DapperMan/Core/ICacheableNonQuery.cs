@@ -11,7 +11,7 @@ namespace DapperMan.Core
         /// <summary>
         /// Executes the query.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type to return</typeparam>
         /// <param name="queryParameters">Parameters to pass to the statement.</param>
         /// <param name="propertyCache">An object used for caching information about the typed object.</param>
         /// <param name="transaction">An active database transaction used for rollbacks.</param>
@@ -23,7 +23,7 @@ namespace DapperMan.Core
         /// <summary>
         /// Executes the query.
         /// </summary>
-        /// <typeparam name="T"></typeparam>
+        /// <typeparam name="T">The type to return</typeparam>
         /// <param name="queryParameters">Parameters to pass to the statement.</param>
         /// <param name="propertyCache">An object used for caching information about the typed object.</param>
         /// <param name="transaction">An active database transaction used for rollbacks.</param>
