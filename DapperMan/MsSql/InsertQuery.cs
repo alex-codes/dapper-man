@@ -1,6 +1,7 @@
 ﻿using DapperMan.Core;
 using DapperMan.Core.Attributes;
 using System;
+using System.Collections;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
@@ -74,7 +75,7 @@ namespace DapperMan.MsSql
         {
             string sql = GenerateStatement<T>(propertyCache);
 
-            if (!string.IsNullOrWhiteSpace(keyField))
+            if (UseIdentity(queryParameters))
             {
                 return Query<int>(sql, queryParameters, transaction: transaction).First();
             }
@@ -98,7 +99,7 @@ namespace DapperMan.MsSql
         {
             string sql = GenerateStatement<T>(propertyCache);
 
-            if (!string.IsNullOrWhiteSpace(keyField))
+            if (UseIdentity(queryParameters))
             {
                 var result = await QueryAsync<int>(sql, queryParameters, transaction: transaction);
                 return result.First();
@@ -152,7 +153,7 @@ namespace DapperMan.MsSql
                 .Replace("{values}", FormatPropertyParameters(propNames))
                 .TrimEmptySpace();
 
-            if (!string.IsNullOrWhiteSpace(keyField))
+            if (UseIdentity())
             {
                 sql += scopeIdentityTemplate;
             }
@@ -185,6 +186,30 @@ namespace DapperMan.MsSql
         {
             propNames = ReflectionHelper.ReflectProperties<T>(propertyCache, new[] { typeof(IdentityAttribute), typeof(InsertIgnoreAttribute) });
             keyField = ReflectionHelper.GetIdentityField<T>(propertyCache);
+        }
+
+        /// <summary>
+        /// Determines whether or not to use the identity specification.
+        /// </summary>
+        /// <returns>
+        /// A boolean that indicates whether or not to use the identity specification.
+        /// </returns>
+        private bool UseIdentity()
+        {
+            return !string.IsNullOrWhiteSpace(keyField);
+        }
+
+        /// <summary>
+        /// Determines whether or not to use the identity specification.
+        /// </summary>
+        /// <param name="queryParameters">Parameters to pass to the statement.</param>
+        /// <returns>
+        /// A boolean that indicates whether or not to use the identity specification.
+        /// </returns>
+        private bool UseIdentity(object queryParameters)
+        {
+            return UseIdentity()
+                && (queryParameters == null || queryParameters is string || !(queryParameters is IEnumerable));
         }
     }
 }

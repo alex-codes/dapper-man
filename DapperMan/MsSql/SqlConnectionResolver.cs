@@ -6,8 +6,6 @@ namespace DapperMan.MsSql
 {
     internal static class SqlConnectionResolver
     {
-        public static object Connection { get; private set; }
-
         internal static IDbConnection ResolveConnection(string connectionString, IDbConnection connection, bool autoOpen = true)
         {
             if (connection != null)
