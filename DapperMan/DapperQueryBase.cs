@@ -2,9 +2,10 @@
 using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Data.SqlClient;
+using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
+[assembly: InternalsVisibleTo("DapperMan.Tests")]
 namespace DapperMan.MsSql
 {
     /// <summary>

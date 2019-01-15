@@ -1,7 +1,6 @@
 ﻿using DapperMan.Core.Attributes;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Reflection;
 
@@ -24,12 +23,7 @@ namespace DapperMan.Core
         {
             Type type = typeof(T);
             string cacheKey = $"{type.FullName}_key";
-            string metaPropsCacheKey = $"{type.FullName}_meta";
             string propsCacheKey = $"{type.FullName}_props";
-
-            PropertyInfo[] metadataProps = null;
-            PropertyInfo[] props = null;
-            MetadataTypeAttribute metaType = null;
 
             if (propertyCache?.Cache != null)
             {
@@ -37,72 +31,16 @@ namespace DapperMan.Core
                 {
                     return propertyCache.Cache.Get(cacheKey) as string;
                 }
-                else if (propertyCache.Cache.Contains(metaPropsCacheKey) && propertyCache.Cache.Contains(propsCacheKey))
-                {
-                    metadataProps = propertyCache.Cache.Get(metaPropsCacheKey) as PropertyInfo[];
-                    props = propertyCache.Cache.Get(propsCacheKey) as PropertyInfo[];
-                }
             }
 
-            if (metadataProps == null || props == null)
-            {
-                metaType = type.GetCustomAttributes(typeof(MetadataTypeAttribute), false)
-                    .OfType<MetadataTypeAttribute>()
-                    .FirstOrDefault();
-
-                if (metaType != null)
-                {
-                    metadataProps = metaType.MetadataClassType.GetProperties();
-                }
-
-                props = type.GetProperties();
-
-                if (propertyCache != null)
-                {
-                    propertyCache.Cache.Set(metaPropsCacheKey, metadataProps, propertyCache.Policy);
-                    propertyCache.Cache.Set(propsCacheKey, props, propertyCache.Policy);
-                }
-            }
-
-            PropertyInfo key = null;
             string keyName = null;
 
-            if (metaType != null)
+            PropertyInfo[] props = type.GetProperties();
+            PropertyInfo key = props.FirstOrDefault(p => p.CustomAttributes.Any(ca => ca.AttributeType == typeof(IdentityAttribute)));
+
+            if (key != null)
             {
-                key = props.FirstOrDefault(p => p.CustomAttributes.Any(ca => ca.AttributeType == typeof(IdentityAttribute)));
-
-                if (key == null)
-                {
-                    key = props.FirstOrDefault(p => p.CustomAttributes.Any(ca => ca.AttributeType == typeof(IdentityAttribute)));
-
-                    if (key != null)
-                    {
-                        keyName = key.Name;
-                    }
-                }
-                else
-                {
-                    keyName = key.Name;
-                }
-            }
-
-            if (key == null)
-            {
-                key = props.FirstOrDefault(p => p.CustomAttributes.Any(ca => ca.AttributeType == typeof(IdentityAttribute)));
-
-                if (key == null)
-                {
-                    key = props.FirstOrDefault(p => p.CustomAttributes.Any(ca => ca.AttributeType == typeof(IdentityAttribute)));
-
-                    if (key != null)
-                    {
-                        keyName = key.Name;
-                    }
-                }
-                else
-                {
-                    keyName = key.Name;
-                }
+                keyName = key.Name;
             }
 
             if (propertyCache != null)
@@ -116,23 +54,15 @@ namespace DapperMan.Core
         /// <summary>
         /// Determines whether or not to include a property in the query.
         /// </summary>
-        /// <param name="metadataProps">A list of metadata.</param>
         /// <param name="prop">An object property.</param>
         /// <param name="ignoreAttributes">A list of attribute types. 
         /// If the property is decorated with one of the supplied attributes, 
         /// the property will not be included in the query.
         /// </param>
         /// <returns>False if the property is decorated with one of the ignored attributes, otherwise true.</returns>
-        public static bool IncludeProperty(PropertyInfo[] metadataProps, PropertyInfo prop, Type[] ignoreAttributes)
+        public static bool IncludeProperty(PropertyInfo prop, Type[] ignoreAttributes)
         {
-            var mdp = metadataProps.FirstOrDefault(p => p.Name == prop.Name);
-
-            bool includeMeta = mdp == null
-                || !mdp.CustomAttributes.Any(ca => IsAttributeIgnored(ca, ignoreAttributes));
-
-            bool includeAttr = !prop.CustomAttributes.Any(ca => IsAttributeIgnored(ca, ignoreAttributes));
-
-            return includeMeta && includeAttr;
+            return !prop.CustomAttributes.Any(ca => IsAttributeIgnored(ca, ignoreAttributes));
         }
 
         /// <summary>
@@ -174,20 +104,7 @@ namespace DapperMan.Core
             }
 
             var props = type.GetProperties();
-            string metaPropsCacheKey = $"{type.FullName}_meta";
             string propsCacheKey = $"{type.FullName}_props";
-
-            var metaType = type.GetCustomAttributes(typeof(MetadataTypeAttribute), false)
-                .OfType<MetadataTypeAttribute>()
-                .FirstOrDefault();
-
-            Type metadataType = null;
-            var metadataProps = (metadataType != null ? metadataType.GetProperties() : new PropertyInfo[0]);
-
-            if (metaType != null)
-            {
-                metadataType = metaType.MetadataClassType;
-            }
 
             var properties = new List<string>();
 
@@ -195,7 +112,7 @@ namespace DapperMan.Core
             {
                 if ((prop.PropertyType.IsValueType || prop.PropertyType == typeof(string)))
                 {
-                    if (IncludeProperty(metadataProps, prop, ignoreAttributes))
+                    if (IncludeProperty(prop, ignoreAttributes))
                     {
                         properties.Add(prop.Name);
                     }
@@ -205,7 +122,6 @@ namespace DapperMan.Core
             if (propertyCache != null)
             {
                 propertyCache.Cache.Set(cacheKey, properties.ToArray(), propertyCache.Policy);
-                propertyCache.Cache.Set(metaPropsCacheKey, metadataProps, propertyCache.Policy);
                 propertyCache.Cache.Set(propsCacheKey, props, propertyCache.Policy);
             }
 
