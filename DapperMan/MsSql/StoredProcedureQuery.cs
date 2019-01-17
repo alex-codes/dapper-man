@@ -50,7 +50,7 @@ namespace DapperMan.MsSql
         /// Creates a new stored procedure query.
         /// </summary>
         /// <param name="procedureName"></param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         public StoredProcedureQuery(string procedureName, IDbConnection connection)
             : this(procedureName, connection, null)
         {
@@ -60,7 +60,7 @@ namespace DapperMan.MsSql
         /// Creates a new stored procedure query.
         /// </summary>
         /// <param name="procedureName"></param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         public StoredProcedureQuery(string procedureName, IDbConnection connection, int? commandTimeout)
             : base(null, connection, commandTimeout)

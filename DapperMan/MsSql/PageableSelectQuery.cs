@@ -54,7 +54,7 @@ namespace DapperMan.MsSql
         /// Creates a new paged select query.
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         public PageableSelectQuery(string source, IDbConnection connection)
             : this(source, connection, null)
         {
@@ -65,7 +65,7 @@ namespace DapperMan.MsSql
         /// Creates a new paged select query.
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         public PageableSelectQuery(string source, IDbConnection connection, int? commandTimeout)
             : base(source, connection, commandTimeout)
@@ -78,7 +78,7 @@ namespace DapperMan.MsSql
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
         /// <param name="connectionString">The connection string to the database.</param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         internal PageableSelectQuery(string source, string connectionString, IDbConnection connection, int? commandTimeout)
             : base(source, connectionString, commandTimeout)

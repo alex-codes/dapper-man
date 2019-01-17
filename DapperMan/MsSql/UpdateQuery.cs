@@ -41,7 +41,7 @@ namespace DapperMan.MsSql
         /// Creates a new update query.
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         public UpdateQuery(string source, IDbConnection connection)
             : this(source, connection, null)
         {
@@ -51,7 +51,7 @@ namespace DapperMan.MsSql
         /// Creates a new update query.
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         public UpdateQuery(string source, IDbConnection connection, int? commandTimeout)
             : base(source, connection, commandTimeout)

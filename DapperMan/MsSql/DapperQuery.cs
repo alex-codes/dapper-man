@@ -21,7 +21,7 @@ namespace DapperMan.MsSql
         /// <summary>
         /// Creates a new instance of DapperQuery.
         /// </summary>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         public DapperQuery(IDbConnection connection)
             : base(null, connection)
         {
@@ -45,7 +45,7 @@ namespace DapperMan.MsSql
         /// <summary>
         /// Creates a new query. You provide the sql.
         /// </summary>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         /// <returns></returns>
         public static DapperQuery Create(IDbConnection connection)
         {
@@ -83,7 +83,7 @@ namespace DapperMan.MsSql
         /// Build a query to count rows in a table.
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         /// <returns>
         /// A new CountQuery.
         /// </returns>
@@ -96,7 +96,7 @@ namespace DapperMan.MsSql
         /// Build a query to count rows in a table.
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         /// <returns>
         /// A new CountQuery.
@@ -137,7 +137,7 @@ namespace DapperMan.MsSql
         /// Builds a query to delete data from a table.
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         /// <returns>
         /// A new DeleteQuery.
         /// </returns>
@@ -150,7 +150,7 @@ namespace DapperMan.MsSql
         /// Builds a query to delete data from a table.
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         /// <returns>
         /// A new DeleteQuery.
@@ -191,7 +191,7 @@ namespace DapperMan.MsSql
         /// Build a query to insert data into a table.
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         /// <returns>
         /// A new InsertQuery.
         /// </returns>
@@ -204,7 +204,7 @@ namespace DapperMan.MsSql
         /// Build a query to insert data into a table.
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         /// <returns>
         /// A new InsertQuery.
@@ -245,7 +245,7 @@ namespace DapperMan.MsSql
         /// Build a query to select a single page of data from a table.
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         /// <returns>
         /// A new PageableSelectQuery.
         /// </returns>
@@ -258,7 +258,7 @@ namespace DapperMan.MsSql
         /// Build a query to select a single page of data from a table.
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         /// <returns>
         /// A new PageableSelectQuery.
@@ -299,7 +299,7 @@ namespace DapperMan.MsSql
         /// Build a query to select data from a table.
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         /// <returns>
         /// A new SelectQuery.
         /// </returns>
@@ -312,7 +312,7 @@ namespace DapperMan.MsSql
         /// Build a query to select data from a table.
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         /// <returns>
         /// A new SelectQuery.
@@ -353,7 +353,7 @@ namespace DapperMan.MsSql
         /// Run a stored procedure.
         /// </summary>
         /// <param name="storedProcedureName"></param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         /// <returns>
         /// A new StoredProcedureQuery.
         /// </returns>
@@ -366,7 +366,7 @@ namespace DapperMan.MsSql
         /// Run a stored procedure.
         /// </summary>
         /// <param name="storedProcedureName"></param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         /// <returns>
         /// A new StoredProcedureQuery.
@@ -407,7 +407,7 @@ namespace DapperMan.MsSql
         /// Build a query to update data.
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         /// <returns>
         /// A new UpdateQuery.
         /// </returns>
@@ -420,7 +420,7 @@ namespace DapperMan.MsSql
         /// Build a query to update data.
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         /// <returns>
         /// A new UpdateQuery.

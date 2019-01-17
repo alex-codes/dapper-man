@@ -29,6 +29,11 @@ namespace DapperMan.MsSql
         protected IDbConnection Connection { get; set; }
 
         /// <summary>
+        /// A flag to indicate whether or not to keep the connection open upon completion of the query.
+        /// </summary>
+        public bool KeepAlive { get; protected set; }
+
+        /// <summary>
         /// The name and schema of the table.
         /// </summary>
         protected string Source { get; set; }
@@ -50,10 +55,11 @@ namespace DapperMan.MsSql
         /// <summary>
         /// Create a new instance of DapperQueryBase.
         /// </summary>
-        /// <param name="connection">A connection to the database.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         protected DapperQueryBase(IDbConnection connection)
         {
             Connection = connection ?? throw new ArgumentNullException(nameof(connection));
+            KeepAlive = true;
         }
 
         /// <summary>
@@ -68,8 +74,9 @@ namespace DapperMan.MsSql
         /// </returns>
         public virtual int ExecuteNonQuery(string query, object param = null, CommandType commandType = CommandType.Text, IDbTransaction transaction = null)
         {
-            using (var conn = ResolveConnection())
+            using (var connFactory = new ConnectionFactory(this))
             {
+                var conn = connFactory.ResolveConnection();
                 return conn.Execute(sql: query, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
             }
         }
@@ -86,8 +93,9 @@ namespace DapperMan.MsSql
         /// </returns>
         public async virtual Task<int> ExecuteNonQueryAsync(string query, object param = null, CommandType commandType = CommandType.Text, IDbTransaction transaction = null)
         {
-            using (var conn = await ResolveConnectionAsync())
+            using (var connFactory = new ConnectionFactory(this))
             {
+                var conn = await connFactory.ResolveConnectionAsync();
                 return await conn.ExecuteAsync(sql: query, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
             }
         }
@@ -105,8 +113,9 @@ namespace DapperMan.MsSql
         /// </returns>
         public virtual IEnumerable<T> Query<T>(string query, object param = null, CommandType commandType = CommandType.Text, IDbTransaction transaction = null)
         {
-            using (var conn = ResolveConnection())
+            using (var connFactory = new ConnectionFactory(this))
             {
+                var conn = connFactory.ResolveConnection();
                 return conn.Query<T>(sql: query, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
             }
         }
@@ -133,8 +142,9 @@ namespace DapperMan.MsSql
             CommandType commandType = CommandType.Text,
             IDbTransaction transaction = null)
         {
-            using (var conn = ResolveConnection())
+            using (var connFactory = new ConnectionFactory(this))
             {
+                var conn = connFactory.ResolveConnection();
                 return conn.Query(query, map, splitOn: splitOn, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
             }
         }
@@ -162,8 +172,9 @@ namespace DapperMan.MsSql
             CommandType commandType = CommandType.Text,
             IDbTransaction transaction = null)
         {
-            using (var conn = ResolveConnection())
+            using (var connFactory = new ConnectionFactory(this))
             {
+                var conn = connFactory.ResolveConnection();
                 return conn.Query(query, map, splitOn: splitOn, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
             }
         }
@@ -192,8 +203,9 @@ namespace DapperMan.MsSql
             CommandType commandType = CommandType.Text,
             IDbTransaction transaction = null)
         {
-            using (var conn = ResolveConnection())
+            using (var connFactory = new ConnectionFactory(this))
             {
+                var conn = connFactory.ResolveConnection();
                 return conn.Query(query, map, splitOn: splitOn, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
             }
         }
@@ -223,8 +235,9 @@ namespace DapperMan.MsSql
             CommandType commandType = CommandType.Text,
             IDbTransaction transaction = null)
         {
-            using (var conn = ResolveConnection())
+            using (var connFactory = new ConnectionFactory(this))
             {
+                var conn = connFactory.ResolveConnection();
                 return conn.Query(query, map, splitOn: splitOn, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
             }
         }
@@ -242,8 +255,9 @@ namespace DapperMan.MsSql
         /// </returns>
         public async virtual Task<IEnumerable<T>> QueryAsync<T>(string query, object param = null, CommandType commandType = CommandType.Text, IDbTransaction transaction = null)
         {
-            using (var conn = await ResolveConnectionAsync())
+            using (var connFactory = new ConnectionFactory(this))
             {
+                var conn = await connFactory.ResolveConnectionAsync();
                 return await conn.QueryAsync<T>(sql: query, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
             }
         }
@@ -270,8 +284,9 @@ namespace DapperMan.MsSql
             CommandType commandType = CommandType.Text,
             IDbTransaction transaction = null)
         {
-            using (var conn = await ResolveConnectionAsync())
+            using (var connFactory = new ConnectionFactory(this))
             {
+                var conn = await connFactory.ResolveConnectionAsync();
                 return await conn.QueryAsync(query, map, splitOn: splitOn, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
             }
         }
@@ -299,8 +314,9 @@ namespace DapperMan.MsSql
             CommandType commandType = CommandType.Text,
             IDbTransaction transaction = null)
         {
-            using (var conn = await ResolveConnectionAsync())
+            using (var connFactory = new ConnectionFactory(this))
             {
+                var conn = await connFactory.ResolveConnectionAsync();
                 return await conn.QueryAsync(query, map, splitOn: splitOn, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
             }
         }
@@ -329,8 +345,9 @@ namespace DapperMan.MsSql
             CommandType commandType = CommandType.Text,
             IDbTransaction transaction = null)
         {
-            using (var conn = await ResolveConnectionAsync())
+            using (var connFactory = new ConnectionFactory(this))
             {
+                var conn = await connFactory.ResolveConnectionAsync();
                 return await conn.QueryAsync(query, map, splitOn: splitOn, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
             }
         }
@@ -360,8 +377,9 @@ namespace DapperMan.MsSql
             CommandType commandType = CommandType.Text,
             IDbTransaction transaction = null)
         {
-            using (var conn = await ResolveConnectionAsync())
+            using (var connFactory = new ConnectionFactory(this))
             {
+                var conn = await connFactory.ResolveConnectionAsync();
                 return await conn.QueryAsync(query, map, splitOn: splitOn, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
             }
         }
@@ -376,8 +394,9 @@ namespace DapperMan.MsSql
         /// <param name="transaction">An active database transaction used for rollbacks.</param>
         public virtual void QueryMultiple(string query, Action<SqlMapper.GridReader> map, object param = null, CommandType commandType = CommandType.Text, IDbTransaction transaction = null)
         {
-            using (var conn = ResolveConnection())
+            using (var connFactory = new ConnectionFactory(this))
             {
+                var conn = connFactory.ResolveConnection();
                 var results = conn.QueryMultiple(sql: query, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
                 map(results);
             }
@@ -394,8 +413,10 @@ namespace DapperMan.MsSql
         /// <returns>A task.</returns>
         public async virtual Task QueryMultipleAsync(string query, Action<SqlMapper.GridReader> map, object param = null, CommandType commandType = CommandType.Text, IDbTransaction transaction = null)
         {
-            using (var conn = await ResolveConnectionAsync())
+            using (var connFactory = new ConnectionFactory(this))
             {
+                var conn = await connFactory.ResolveConnectionAsync();
+
                 var results = await conn.QueryMultipleAsync(sql: query, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
                 map(results);
             }
@@ -418,5 +439,45 @@ namespace DapperMan.MsSql
         /// An instance of <see cref="SqlConnection"/>
         /// </returns>
         protected abstract Task<IDbConnection> ResolveConnectionAsync(bool autoOpen = true);
+
+        /// <summary>
+        /// An internal connection factory used for cleaning up connections.
+        /// </summary>
+        protected class ConnectionFactory : IDisposable
+        {
+            private IDbConnection connection;
+            private DapperQueryBase instance;
+
+            public ConnectionFactory(DapperQueryBase instance)
+            {
+                this.instance = instance;
+            }
+
+            public virtual IDbConnection ResolveConnection(bool autoOpen = true)
+            {
+                connection = instance.ResolveConnection(autoOpen);
+                return connection;
+            }
+
+            public virtual async Task<IDbConnection> ResolveConnectionAsync(bool autoOpen = true)
+            {
+                connection = await instance.ResolveConnectionAsync(autoOpen);
+                return connection;
+            }
+
+            public void Dispose()
+            {
+                if (!instance.KeepAlive)
+                {
+                    if (connection.State != ConnectionState.Closed)
+                    {
+                        connection.Close();
+                    }
+
+                    connection.Dispose();
+                    connection = null;
+                }
+            }
+        }
     }
 }
