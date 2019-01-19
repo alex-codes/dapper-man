@@ -4,9 +4,9 @@ using System.Threading.Tasks;
 namespace DapperMan.Core
 {
     /// <summary>
-    /// Build a query to count rows in a table.
+    /// Build a query to select a single row from a table.
     /// </summary>
-    public interface ICountQueryBuilder
+    public interface IFindQueryBuilder
     {
         /// <summary>
         /// Executes the query.
@@ -14,9 +14,9 @@ namespace DapperMan.Core
         /// <param name="queryParameters">Parameters to pass to the statement.</param>
         /// <param name="transaction">An active database transaction used for rollbacks.</param>
         /// <returns>
-        /// The count of rows that match the criteria.
+        /// A single object that matches the search criteria.
         /// </returns>
-        int Execute(object queryParameters = null, IDbTransaction transaction = null);
+        T Execute<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class;
 
         /// <summary>
         /// Executes the query.
@@ -24,17 +24,17 @@ namespace DapperMan.Core
         /// <param name="queryParameters">Parameters to pass to the statement.</param>
         /// <param name="transaction">An active database transaction used for rollbacks.</param>
         /// <returns>
-        /// The count of rows that match the criteria.
+        /// A single object that matches the search criteria.
         /// </returns>
-        Task<int> ExecuteAsync(object queryParameters = null, IDbTransaction transaction = null);
+        Task<T> ExecuteAsync<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class;
 
         /// <summary>
         /// Adds a filter to the query.
         /// </summary>
         /// <param name="filter">The filter string to add to the query.</param>
         /// <returns>
-        /// The ICountQueryBuilder instance.
+        /// The IFindQueryBuilder instance.
         /// </returns>
-        ICountQueryBuilder Where(string filter);
+        IFindQueryBuilder Where(string filter);
     }
 }

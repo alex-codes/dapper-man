@@ -163,6 +163,60 @@ namespace DapperMan.MsSql
         }
 
         /// <summary>
+        /// Build a query to select a single row from a table.
+        /// </summary>
+        /// <param name="source">The name and schema of the table.</param>
+        /// <param name="connectionString">The connection string to the database.</param>
+        /// <returns>
+        /// A new FindQuery.
+        /// </returns>
+        public static IFindQueryBuilder Find(string source, string connectionString)
+        {
+            return new FindQuery(source, connectionString);
+        }
+
+        /// <summary>
+        /// Build a query to select a single row from a table.
+        /// </summary>
+        /// <param name="source">The name and schema of the table.</param>
+        /// <param name="connectionString">The connection string to the database.</param>
+        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
+        /// <returns>
+        /// A new FindQuery.
+        /// </returns>
+        public static IFindQueryBuilder Find(string source, string connectionString, int? commandTimeout)
+        {
+            return new FindQuery(source, connectionString, commandTimeout);
+        }
+
+        /// <summary>
+        /// Build a query to select a single row from a table.
+        /// </summary>
+        /// <param name="source">The name and schema of the table.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
+        /// <returns>
+        /// A new FindQuery.
+        /// </returns>
+        public static IFindQueryBuilder Find(string source, IDbConnection connection)
+        {
+            return new FindQuery(source, connection);
+        }
+
+        /// <summary>
+        /// Build a query to select a single row from a table.
+        /// </summary>
+        /// <param name="source">The name and schema of the table.</param>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
+        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
+        /// <returns>
+        /// A new FindQuery.
+        /// </returns>
+        public static IFindQueryBuilder Find(string source, IDbConnection connection, int? commandTimeout)
+        {
+            return new FindQuery(source, connection, commandTimeout);
+        }
+
+        /// <summary>
         /// Build a query to insert data into a table.
         /// </summary>
         /// <param name="source">The name and schema of the table.</param>

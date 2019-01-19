@@ -17,6 +17,7 @@ namespace DapperManDemo
         {
             var demo = new SqlClientDemo();
             demo.ReadAllDepartments();
+            demo.FindDepartment();
         }
     }
 }

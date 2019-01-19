@@ -24,8 +24,24 @@ namespace DapperManDemo
             connStr = configuration.GetConnectionString("MSSQL");
         }
 
+        public void FindDepartment()
+        {
+            Console.WriteLine("/// FindDepartment ///");
+            Console.WriteLine();
+
+            var dept = DapperQuery.Find("HumanResources.Department", connStr)
+                .Where("DepartmentId = @id")
+                .Execute<Department>(new { id = 1 });
+
+            Console.WriteLine(dept.ToString());
+            Console.WriteLine();
+        }
+
         public void ReadAllDepartments()
         {
+            Console.WriteLine("/// ReadAllDepartments ///");
+            Console.WriteLine();
+
             (var depts, int count) = DapperQuery.Select("HumanResources.Department", connStr)
                 .Execute<Department>();
 
