@@ -1,6 +1,5 @@
 ﻿using DapperMan.Core;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Threading.Tasks;
@@ -10,7 +9,7 @@ namespace DapperMan.MsSql
     /// <summary>
     /// Builds a query to delete data from a table.
     /// </summary>
-    public class DeleteQuery : SqlQueryBase, IDeleteQueryBuilder, IQueryGenerator
+    public class DeleteQuery : MsSqlQueryBase, IDeleteQueryBuilder, IQueryGenerator
     {
         private readonly string defaultQueryTemplate = "DELETE FROM {source} {filter};";
 

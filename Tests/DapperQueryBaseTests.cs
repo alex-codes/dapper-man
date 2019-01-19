@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Data;
 using System.Threading.Tasks;
+using DapperMan;
 using DapperMan.MsSql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

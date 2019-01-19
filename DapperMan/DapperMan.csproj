@@ -2,6 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Version>2.0.0</Version>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageProjectUrl>https://github.com/alex-codes/dapper-man</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/alex-codes/dapper-man/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/alex-codes/dapper-man</RepositoryUrl>
+    <Description>A simple set of wrappers for Dapper to generate small SQL statements. Similar in concept to what you'll find in Dapper.Contrib, but with a consistent API and extra features.
+
+This contains the core implementation of DapperMan.</Description>
+    <Authors>alex-codes</Authors>
+    <Company />
   </PropertyGroup>
 
   <ItemGroup>

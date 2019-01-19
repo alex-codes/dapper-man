@@ -1,12 +1,14 @@
 ﻿using DapperMan.Core;
 using System.Data;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("DapperMan.Tests")]
 namespace DapperMan.MsSql
 {
     /// <summary>
     /// A basic query abstraction.
     /// </summary>
-    public class DapperQuery : SqlQueryBase
+    public class DapperQuery : MsSqlQueryBase
     {
         /// <summary>
         /// Creates a new instance of DapperQuery.

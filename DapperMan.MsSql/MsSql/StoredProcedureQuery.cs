@@ -10,7 +10,7 @@ namespace DapperMan.MsSql
     /// <summary>
     /// Run a stored procedure.
     /// </summary>
-    public class StoredProcedureQuery : SqlQueryBase, IStoredProcedureQueryBuilder
+    public class StoredProcedureQuery : MsSqlQueryBase, IStoredProcedureQueryBuilder
     {
         //TODO: is there a way to easily handle output parameters?
 

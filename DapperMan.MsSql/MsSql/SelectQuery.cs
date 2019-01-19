@@ -11,7 +11,7 @@ namespace DapperMan.MsSql
     /// <summary>
     /// Build a query to select data from a table.
     /// </summary>
-    public class SelectQuery : SqlQueryBase, ISelectQueryBuilder, IQueryGenerator
+    public class SelectQuery : MsSqlQueryBase, ISelectQueryBuilder, IQueryGenerator
     {
         private readonly string defaultQueryTemplate = "SELECT * FROM {source} {filter} {sort};";
 

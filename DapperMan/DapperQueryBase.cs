@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 
 [assembly: InternalsVisibleTo("DapperMan.Tests")]
-namespace DapperMan.MsSql
+namespace DapperMan
 {
     /// <summary>
     /// A class containing all base functionality for query builders.

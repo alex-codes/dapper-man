@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Description>This contains the DapperMan implementation for MSSQL Server.</Description>
+    <PackageProjectUrl>https://github.com/alex-codes/dapper-man</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/alex-codes/dapper-man</RepositoryUrl>
+    <PackageLicenseUrl>https://github.com/alex-codes/dapper-man/blob/master/LICENSE</PackageLicenseUrl>
+    <Authors>alex-codes</Authors>
+    <Company />
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Data.SqlClient" Version="4.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DapperMan\DapperMan.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,6 +1,5 @@
 ﻿using DapperMan.Core;
 using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Diagnostics;
 using System.Linq;
@@ -11,7 +10,7 @@ namespace DapperMan.MsSql
     /// <summary>
     /// Build a query to count rows in a table.
     /// </summary>
-    public class CountQuery : SqlQueryBase, ICountQueryBuilder, IQueryGenerator
+    public class CountQuery : MsSqlQueryBase, ICountQueryBuilder, IQueryGenerator
     {
         private string defaultQueryTemplate = "SELECT [Count] = COUNT(*) FROM {source} {filter};";
 

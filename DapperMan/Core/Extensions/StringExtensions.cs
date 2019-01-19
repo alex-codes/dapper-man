@@ -2,7 +2,7 @@
 
 namespace DapperMan.Core
 {
-    internal static class StringExtensions
+    public static class StringExtensions
     {
         /// <summary>
         /// Recursively replaces a string of empty spaces with a single space.
@@ -11,7 +11,7 @@ namespace DapperMan.Core
         /// <returns>
         /// A sanitized string.
         /// </returns>
-        internal static string TrimEmptySpace(this string str)
+        public static string TrimEmptySpace(this string str)
         {
             var regex = new Regex(@"[\s]{2,}");
             return regex.Replace(str, " ")

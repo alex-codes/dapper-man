@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Data;
+using DapperMan.Core;
 using DapperMan.MsSql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;

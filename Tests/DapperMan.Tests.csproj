@@ -90,6 +90,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\DapperMan.MsSql\DapperMan.MsSql.csproj">
+      <Project>{7c410aa2-f7fc-4f58-bc39-42d8a9dc8faf}</Project>
+      <Name>DapperMan.MsSql</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DapperMan\DapperMan.csproj">
       <Project>{7342156e-4b92-47e3-bb61-161312231aff}</Project>
       <Name>DapperMan</Name>

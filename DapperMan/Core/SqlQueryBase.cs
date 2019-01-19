@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Threading.Tasks;
 
-namespace DapperMan.MsSql
+namespace DapperMan.Core
 {
     public abstract class SqlQueryBase : DapperQueryBase
     {
@@ -89,30 +88,6 @@ namespace DapperMan.MsSql
             }
 
             SortOrders.Add(orderBy);
-        }
-
-        /// <summary>
-        /// Gets the connection to the database.
-        /// </summary>
-        /// <param name="autoOpen">If true, the connection is opened prior to use.</param>
-        /// <returns>
-        /// An instance of <see cref="SqlConnection"/>
-        /// </returns>
-        protected override IDbConnection ResolveConnection(bool autoOpen = true)
-        {
-            return SqlConnectionResolver.ResolveConnection(ConnectionString, Connection, autoOpen);
-        }
-
-        /// <summary>
-        /// Gets the connection to the database.
-        /// </summary>
-        /// <param name="autoOpen">If true, the connection is opened prior to use.</param>
-        /// <returns>
-        /// An instance of <see cref="SqlConnection"/>
-        /// </returns>
-        protected override Task<IDbConnection> ResolveConnectionAsync(bool autoOpen = true)
-        {
-            return SqlConnectionResolver.ResolveConnectionAsync(ConnectionString, Connection, autoOpen);
         }
     }
 }
