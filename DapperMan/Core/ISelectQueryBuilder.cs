@@ -18,7 +18,7 @@ namespace DapperMan.Core
         /// <returns>
         /// Returns IEnumerable and count of total rows.
         /// </returns>
-        (IEnumerable<T> Results, int TotalRows) Execute<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class;
+        (IEnumerable<T> Results, int TotalRows) Execute<T>(object queryParameters = null, IDbTransaction transaction = null);
 
         /// <summary>
         /// Executes the query.
@@ -29,7 +29,7 @@ namespace DapperMan.Core
         /// <returns>
         /// Returns IEnumerable and count of total rows.
         /// </returns>
-        Task<(IEnumerable<T> Results, int TotalRows)> ExecuteAsync<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class;
+        Task<(IEnumerable<T> Results, int TotalRows)> ExecuteAsync<T>(object queryParameters = null, IDbTransaction transaction = null);
 
         /// <summary>
         /// Adds a sort order to the query.

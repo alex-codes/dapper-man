@@ -66,7 +66,7 @@ namespace DapperMan.MsSql
         /// <returns>
         /// Returns IEnumerable and count of total rows.
         /// </returns>
-        public virtual (IEnumerable<T> Results, int TotalRows) Execute<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class
+        public virtual (IEnumerable<T> Results, int TotalRows) Execute<T>(object queryParameters = null, IDbTransaction transaction = null)
         {
             var results = Query<T>(GenerateStatement(), queryParameters, transaction: transaction);
             return (results, results.Count());
@@ -81,7 +81,7 @@ namespace DapperMan.MsSql
         /// <returns>
         /// Returns IEnumerable and count of total rows.
         /// </returns>
-        public virtual async Task<(IEnumerable<T> Results, int TotalRows)> ExecuteAsync<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class
+        public virtual async Task<(IEnumerable<T> Results, int TotalRows)> ExecuteAsync<T>(object queryParameters = null, IDbTransaction transaction = null)
         {
             var results = await QueryAsync<T>(GenerateStatement(), queryParameters, transaction: transaction);
             return (results, results.Count());

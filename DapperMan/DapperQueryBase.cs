@@ -101,6 +101,100 @@ namespace DapperMan
         }
 
         /// <summary>
+        /// Executes a query that returns an IDataReader.
+        /// </summary>
+        /// <param name="query">The sql statement to execute.</param>
+        /// <param name="param">An object to which the query parameters are mapped.</param>
+        /// <param name="commandType">The sql command type.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// An IDataReader instance that can be used to iterate over the results of the query.
+        /// </returns>
+        public virtual IDataReader ExecuteReader(string query, object param = null, CommandType commandType = CommandType.Text, IDbTransaction transaction = null)
+        {
+            using (var connFactory = new ConnectionFactory(this))
+            {
+                var conn = connFactory.ResolveConnection();
+                return conn.ExecuteReader(sql: query, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
+            }
+        }
+
+        /// <summary>
+        /// Executes a query that returns an IDataReader.
+        /// </summary>
+        /// <param name="query">The sql statement to execute.</param>
+        /// <param name="param">An object to which the query parameters are mapped.</param>
+        /// <param name="commandType">The sql command type.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// An IDataReader instance that can be used to iterate over the results of the query.
+        /// </returns>
+        /// <remarks>
+        /// Throws an exception if you do not provide an IDbConnection instance.
+        /// </remarks>
+        public async virtual Task<IDataReader> ExecuteReaderAsync(string query, object param = null, CommandType commandType = CommandType.Text, IDbTransaction transaction = null)
+        {
+            if (Connection == null)
+            {
+                throw new ArgumentException("You must provide an IDbConnection instance that remains open in order to iterate the results.");
+            }
+
+            using (var connFactory = new ConnectionFactory(this))
+            {
+                var conn = await connFactory.ResolveConnectionAsync();
+                return await conn.ExecuteReaderAsync(sql: query, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
+            }
+        }
+
+        /// <summary>
+        /// Executes a query that returns a single value.
+        /// </summary>
+        /// <typeparam name="T">The type to return</typeparam>
+        /// <param name="query">The sql statement to execute.</param>
+        /// <param name="param">An object to which the query parameters are mapped.</param>
+        /// <param name="commandType">The sql command type.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// The result from executing the query, typically the number of rows affected.
+        /// </returns>
+        /// <remarks>
+        /// Throws an exception if you do not provide an IDbConnection instance.
+        /// </remarks>
+        public virtual T ExecuteScalar<T>(string query, object param = null, CommandType commandType = CommandType.Text, IDbTransaction transaction = null)
+        {
+            if (Connection == null)
+            {
+                throw new ArgumentException("You must provide an IDbConnection instance that remains open in order to iterate the results.");
+            }
+
+            using (var connFactory = new ConnectionFactory(this))
+            {
+                var conn = connFactory.ResolveConnection();
+                return conn.ExecuteScalar<T>(sql: query, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
+            }
+        }
+
+        /// <summary>
+        /// Executes a query that returns a single value.
+        /// </summary>
+        /// <typeparam name="T">The type to return</typeparam>
+        /// <param name="query">The sql statement to execute.</param>
+        /// <param name="param">An object to which the query parameters are mapped.</param>
+        /// <param name="commandType">The sql command type.</param>
+        /// <param name="transaction">An active database transaction used for rollbacks.</param>
+        /// <returns>
+        /// The result from executing the query, typically the number of rows affected.
+        /// </returns>
+        public async virtual Task<T> ExecuteScalarAsync<T>(string query, object param = null, CommandType commandType = CommandType.Text, IDbTransaction transaction = null)
+        {
+            using (var connFactory = new ConnectionFactory(this))
+            {
+                var conn = await connFactory.ResolveConnectionAsync();
+                return await conn.ExecuteScalarAsync<T>(sql: query, param: param, commandType: commandType, transaction: transaction, commandTimeout: CommandTimeout);
+            }
+        }
+
+        /// <summary>
         /// Executes a query.
         /// </summary>
         /// <typeparam name="T">The type to return</typeparam>

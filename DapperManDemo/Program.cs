@@ -19,6 +19,7 @@ namespace DapperManDemo
             demo.ReadAllDepartments();
             demo.FindDepartment();
             demo.DepartmentExists();
+            demo.ReadDepartmentIds();
         }
     }
 }

@@ -67,5 +67,23 @@ namespace DapperManDemo
             Console.WriteLine($"{count} department records found.");
             Console.WriteLine();
         }
+
+        public void ReadDepartmentIds()
+        {
+            Console.WriteLine("/// ReadDepartmentIds ///");
+            Console.WriteLine();
+
+            (var depts, int count) = DapperQuery.Select("HumanResources.Department", connStr)
+                .Execute<int>();
+
+            foreach (var dept in depts)
+            {
+                Console.WriteLine(dept.ToString());
+            }
+
+            Console.WriteLine();
+            Console.WriteLine($"{count} department records found.");
+            Console.WriteLine();
+        }
     }
 }

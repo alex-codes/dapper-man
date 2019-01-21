@@ -16,7 +16,7 @@ namespace DapperMan.Core
         /// <returns>
         /// A single object that matches the search criteria.
         /// </returns>
-        T Execute<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class;
+        T Execute<T>(object queryParameters = null, IDbTransaction transaction = null);
 
         /// <summary>
         /// Executes the query.
@@ -26,7 +26,7 @@ namespace DapperMan.Core
         /// <returns>
         /// A single object that matches the search criteria.
         /// </returns>
-        Task<T> ExecuteAsync<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class;
+        Task<T> ExecuteAsync<T>(object queryParameters = null, IDbTransaction transaction = null);
 
         /// <summary>
         /// Adds a filter to the query.

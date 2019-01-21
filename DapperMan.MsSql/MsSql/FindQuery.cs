@@ -67,7 +67,7 @@ namespace DapperMan.MsSql
         /// <returns>
         /// A single object that matches the search criteria.
         /// </returns>
-        public T Execute<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class
+        public T Execute<T>(object queryParameters = null, IDbTransaction transaction = null)
         {
             var results = Query<T>(GenerateStatement(), queryParameters, transaction: transaction);
             return results.FirstOrDefault();
@@ -82,7 +82,7 @@ namespace DapperMan.MsSql
         /// <returns>
         /// A single object that matches the search criteria.
         /// </returns>
-        public async Task<T> ExecuteAsync<T>(object queryParameters = null, IDbTransaction transaction = null) where T : class
+        public async Task<T> ExecuteAsync<T>(object queryParameters = null, IDbTransaction transaction = null)
         {
             var results = await QueryAsync<T>(GenerateStatement(), queryParameters, transaction: transaction);
             return results.FirstOrDefault();
