@@ -24,6 +24,19 @@ namespace DapperManDemo
             connStr = configuration.GetConnectionString("MSSQL");
         }
 
+        public void DepartmentExists()
+        {
+            Console.WriteLine("/// DepartmentExists ///");
+            Console.WriteLine();
+
+            bool result = DapperQuery.Exists("HumanResources.Department", connStr)
+                .Where("DepartmentId = @id")
+                .Execute(new { id = 1 });
+
+            Console.WriteLine(result.ToString());
+            Console.WriteLine();
+        }
+
         public void FindDepartment()
         {
             Console.WriteLine("/// FindDepartment ///");
