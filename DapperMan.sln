@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Samples", "Samples", "{6872
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DapperManDemo", "DapperManDemo\DapperManDemo.csproj", "{BB4BA7E0-342D-4076-9B45-302FE7C0EC87}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DapperMan.SQLite", "DapperMan.SQLite\DapperMan.SQLite.csproj", "{4F25C4FD-F739-4AAC-847E-C47FDD89A0B6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{BB4BA7E0-342D-4076-9B45-302FE7C0EC87}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BB4BA7E0-342D-4076-9B45-302FE7C0EC87}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BB4BA7E0-342D-4076-9B45-302FE7C0EC87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F25C4FD-F739-4AAC-847E-C47FDD89A0B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F25C4FD-F739-4AAC-847E-C47FDD89A0B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F25C4FD-F739-4AAC-847E-C47FDD89A0B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F25C4FD-F739-4AAC-847E-C47FDD89A0B6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

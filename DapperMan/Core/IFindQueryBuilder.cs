@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 
 namespace DapperMan.Core
 {
+    //TODO: should find query throw/return a flag if more than one result is found?
+
     /// <summary>
     /// Build a query to select a single row from a table.
     /// </summary>
