@@ -73,12 +73,16 @@
     <Compile Include="MockData\TableWithIdentity.cs" />
     <Compile Include="MockData\TableWithInsertIgnore.cs" />
     <Compile Include="MockData\TableWithUpdateIgnore.cs" />
+    <Compile Include="MsSql\FindQueryTests.cs" />
+    <Compile Include="MsSql\ExistsQueryTests.cs" />
     <Compile Include="PropertyCacheTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MsSql\CountQueryTests.cs" />
     <Compile Include="MsSql\DeleteQueryTests.cs" />
     <Compile Include="SQLite\CountQueryTests.cs" />
     <Compile Include="SQLite\DeleteQueryTests.cs" />
+    <Compile Include="SQLite\ExistsQueryTests.cs" />
+    <Compile Include="SQLite\FindQueryTests.cs" />
     <Compile Include="SQLite\InsertQueryTests.cs" />
     <Compile Include="SQLite\PageableSelectQueryTests.cs" />
     <Compile Include="SQLite\SelectQueryTests.cs" />
