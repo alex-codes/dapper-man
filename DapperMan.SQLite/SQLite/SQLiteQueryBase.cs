@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 
 namespace DapperMan.SQLite
 {
+    /// <summary>
+    /// Abstract class containing logic for SQLite.
+    /// </summary>
     public abstract class SQLiteQueryBase : SqlQueryBase
     {
         /// <summary>

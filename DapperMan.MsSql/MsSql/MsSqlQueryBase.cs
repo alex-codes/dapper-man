@@ -4,6 +4,9 @@ using System.Threading.Tasks;
 
 namespace DapperMan.MsSql
 {
+    /// <summary>
+    /// Abstract class containing logic for MS SQL Server.
+    /// </summary>
     public abstract class MsSqlQueryBase : SqlQueryBase
     {
         /// <summary>

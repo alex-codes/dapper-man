@@ -6,13 +6,25 @@ using System.Text;
 
 namespace DapperMan.SQLite
 {
+    /// <summary>
+    /// A basic query abstraction.
+    /// </summary>
     public class DapperQuery : SQLiteQueryBase
     {
+        /// <summary>
+        /// Creates a new instance of DapperQuery.
+        /// </summary>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
         public DapperQuery(IDbConnection connection)
             : base(null, connection)
         {
         }
 
+        /// <summary>
+        /// Creates a new instance of DapperQuery.
+        /// </summary>
+        /// <param name="connection">A connection to the database. The connection is NOT closed upon completion of the query.</param>
+        /// <param name="commandTimeout">Number of seconds before command execution timeout.</param>
         public DapperQuery(IDbConnection connection, int? commandTimeout) 
             : base(null, connection, commandTimeout)
         {

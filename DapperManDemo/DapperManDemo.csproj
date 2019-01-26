@@ -7,10 +7,14 @@
 
   <ItemGroup>
     <None Remove="appsettings.json" />
+    <None Remove="Data\Chinook_Sqlite.sqlite" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\Chinook_Sqlite.sqlite">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
@@ -23,6 +27,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DapperMan.MsSql\DapperMan.MsSql.csproj" />
+    <ProjectReference Include="..\DapperMan.SQLite\DapperMan.SQLite.csproj" />
     <ProjectReference Include="..\DapperMan\DapperMan.csproj" />
   </ItemGroup>
 

@@ -6,7 +6,7 @@ namespace DapperManDemo
     {
         static void Main(string[] args)
         {
-            RunSqlDemo();
+            RunSqliteDemo();
 
             Console.WriteLine();
             Console.WriteLine("Press any key to exit");
@@ -20,6 +20,12 @@ namespace DapperManDemo
             demo.FindDepartment();
             demo.DepartmentExists();
             demo.ReadDepartmentIds();
+        }
+
+        static void RunSqliteDemo()
+        {
+            var demo = new SqliteDemo();
+            demo.RunAll();
         }
     }
 }
