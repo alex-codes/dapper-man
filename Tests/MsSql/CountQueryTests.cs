@@ -3,16 +3,17 @@ using DapperMan.Core;
 using DapperMan.MsSql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Tests
+namespace Tests.MsSql
 {
     [TestClass]
-    public class DeleteQueryTests
+    public class CountQueryTests
     {
         [TestMethod]
-        public void DeleteQuery_GenerateStatement()
+        public void CountQuery_GenerateStatement()
         {
             string expected = @"
-DELETE FROM dbo.TableName
+SELECT [Count] = COUNT(*)
+FROM dbo.TableName
 WHERE A = @a
 AND B = @b;";
 
@@ -20,7 +21,7 @@ AND B = @b;";
                 .Replace(Environment.NewLine, " ")
                 .Trim();
 
-            var query = DapperQuery.Delete("dbo.TableName", "constr")
+            var query = DapperQuery.Count("dbo.TableName", "constr")
                 .Where("A = @a")
                 .Where("B = @b");
 
@@ -29,9 +30,9 @@ AND B = @b;";
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void DeleteQuery_GenerateStatement_ThrowsWhenSourceNull()
+        public void CountQuery_GenerateStatement_ThrowsWhenSourceNull()
         {
-            ((IQueryGenerator)DapperQuery.Delete(null, "constr"))
+            ((IQueryGenerator)DapperQuery.Count(null, "constr"))
                 .GenerateStatement();
         }
     }

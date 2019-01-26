@@ -75,15 +75,21 @@
     <Compile Include="MockData\TableWithUpdateIgnore.cs" />
     <Compile Include="PropertyCacheTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="CountQueryTests.cs" />
-    <Compile Include="DeleteQueryTests.cs" />
+    <Compile Include="MsSql\CountQueryTests.cs" />
+    <Compile Include="MsSql\DeleteQueryTests.cs" />
+    <Compile Include="SQLite\CountQueryTests.cs" />
+    <Compile Include="SQLite\DeleteQueryTests.cs" />
+    <Compile Include="SQLite\InsertQueryTests.cs" />
+    <Compile Include="SQLite\PageableSelectQueryTests.cs" />
+    <Compile Include="SQLite\SelectQueryTests.cs" />
+    <Compile Include="SQLite\UpdateQueryTests.cs" />
     <Compile Include="SqlQueryBaseTests.cs" />
-    <Compile Include="InsertQueryTests.cs" />
+    <Compile Include="MsSql\InsertQueryTests.cs" />
     <Compile Include="DapperQueryBaseTests.cs" />
-    <Compile Include="StoredProcedureQueryTests.cs" />
-    <Compile Include="PageableSelectQueryTests.cs" />
-    <Compile Include="SelectQueryTests.cs" />
-    <Compile Include="UpdateQueryTests.cs" />
+    <Compile Include="MsSql\StoredProcedureQueryTests.cs" />
+    <Compile Include="MsSql\PageableSelectQueryTests.cs" />
+    <Compile Include="MsSql\SelectQueryTests.cs" />
+    <Compile Include="MsSql\UpdateQueryTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -93,6 +99,10 @@
     <ProjectReference Include="..\DapperMan.MsSql\DapperMan.MsSql.csproj">
       <Project>{7c410aa2-f7fc-4f58-bc39-42d8a9dc8faf}</Project>
       <Name>DapperMan.MsSql</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DapperMan.SQLite\DapperMan.SQLite.csproj">
+      <Project>{4f25c4fd-f739-4aac-847e-c47fdd89a0b6}</Project>
+      <Name>DapperMan.SQLite</Name>
     </ProjectReference>
     <ProjectReference Include="..\DapperMan\DapperMan.csproj">
       <Project>{7342156e-4b92-47e3-bb61-161312231aff}</Project>

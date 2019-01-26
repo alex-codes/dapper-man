@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Data;
 using DapperMan.Core;
-using DapperMan.MsSql;
+using DapperMan.SQLite;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
-namespace Tests
+namespace Tests.SQLite
 {
     [TestClass]
     public class SelectQueryTests
@@ -11,6 +13,8 @@ namespace Tests
         [TestMethod]
         public void SelectQuery_GenerateStatement()
         {
+            var conn = new Mock<IDbConnection>().Object;
+
             string sql = @"
 SELECT *
 FROM TableName
@@ -22,7 +26,7 @@ ORDER BY C, D;";
                 .Replace(Environment.NewLine, " ")
                 .Trim();
 
-            var query = DapperQuery.Select("TableName", "constr")
+            var query = DapperQuery.Select("TableName", conn)
                 .Where("A = @a")
                 .Where("B = @b")
                 .OrderBy("C")
@@ -35,7 +39,9 @@ ORDER BY C, D;";
         [ExpectedException(typeof(ArgumentNullException))]
         public void SelectQuery_GenerateStatement_ThrowsWhenNullSource()
         {
-            ((IQueryGenerator)DapperQuery.Select(null, "constr"))
+            var conn = new Mock<IDbConnection>().Object;
+
+            ((IQueryGenerator)DapperQuery.Select(null, conn))
                 .GenerateStatement();
         }
 
@@ -43,7 +49,9 @@ ORDER BY C, D;";
         [ExpectedException(typeof(ArgumentException))]
         public void SelctQuery_SkipTake_ThrowsWhenSkipNegative()
         {
-            DapperQuery.Select(null, "constr")
+            var conn = new Mock<IDbConnection>().Object;
+
+            DapperQuery.Select(null, conn)
                 .SkipTake(-1, 0);
         }
 
@@ -51,14 +59,18 @@ ORDER BY C, D;";
         [ExpectedException(typeof(ArgumentException))]
         public void SelectQuery_SkipTake_ThrowsWhenTakeNegative()
         {
-            DapperQuery.Select(null, "constr")
+            var conn = new Mock<IDbConnection>().Object;
+
+            DapperQuery.Select(null, conn)
                 .SkipTake(0, -1);
         }
 
         [TestMethod]
         public void SelectQuery_SkipTake_NewPageableQuery()
         {
-            var query = DapperQuery.Select("TableName", "constr")
+            var conn = new Mock<IDbConnection>().Object;
+
+            var query = DapperQuery.Select("TableName", conn)
                 .SkipTake(0, 0);
 
             Assert.IsTrue(query is PageableSelectQuery);
@@ -67,7 +79,9 @@ ORDER BY C, D;";
         [TestMethod]
         public void SelectQuery_SkipTake_GeneratePageableStatement()
         {
-            var query = DapperQuery.Select("TableName", "constr")
+            var conn = new Mock<IDbConnection>().Object;
+
+            var query = DapperQuery.Select("TableName", conn)
                 .Where("A = @a")
                 .Where("B = @b")
                 .OrderBy("C")
@@ -79,7 +93,8 @@ SELECT *
 FROM TableName
 WHERE A = @a
 AND B = @b
-ORDER BY C, D";
+ORDER BY C, D
+LIMIT 0 OFFSET 0";
 
             string expected = sql
                 .Replace(Environment.NewLine, " ")

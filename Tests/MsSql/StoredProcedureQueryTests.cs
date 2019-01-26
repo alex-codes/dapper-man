@@ -2,7 +2,7 @@
 using DapperMan.MsSql;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Tests
+namespace Tests.MsSql
 {
     [TestClass]
     public class StoredProcedureQueryTests

@@ -6,7 +6,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using Tests.MockData;
 
-namespace Tests
+namespace Tests.MsSql
 {
     [TestClass]
     public class UpdateQueryTests

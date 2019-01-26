@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Data;
 using DapperMan.Core;
-using DapperMan.MsSql;
+using DapperMan.SQLite;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Moq;
 
-namespace Tests
+namespace Tests.SQLite
 {
     [TestClass]
     public class PageableSelectQueryTests
@@ -11,16 +13,18 @@ namespace Tests
         [TestMethod]
         public void PageableSelectQuery_GenerateStatement()
         {
+            var conn = new Mock<IDbConnection>().Object;
+
             string sql = @"
 SELECT *
 FROM TableName
 WHERE A = @a
 AND B = @b
 ORDER BY C, D
-OFFSET 25 ROWS FETCH NEXT 10 ROWS ONLY;";
+LIMIT 10 OFFSET 25;";
 
             string count = @"
-SELECT COUNT(*)
+SELECT COUNT(*) as [Count]
 FROM TableName
 WHERE A = @a
 AND B = @b;";
@@ -32,7 +36,7 @@ AND B = @b;";
                     .Replace(Environment.NewLine, " ")
                     .Trim();
 
-            var query = DapperQuery.PageableSelect("TableName", "constr")
+            var query = DapperQuery.PageableSelect("TableName", conn)
                 .Where("A = @a")
                 .Where("B = @b")
                 .OrderBy("C")
@@ -46,7 +50,9 @@ AND B = @b;";
         [ExpectedException(typeof(ArgumentNullException))]
         public void PageableSelectQuery_GenerateStatement_ThrowsWhenNullSource()
         {
-            ((IQueryGenerator)DapperQuery.PageableSelect(null, "constr"))
+            var conn = new Mock<IDbConnection>().Object;
+
+            ((IQueryGenerator)DapperQuery.PageableSelect(null, conn))
                 .GenerateStatement();
         }
 
@@ -54,7 +60,9 @@ AND B = @b;";
         [ExpectedException(typeof(ArgumentException))]
         public void PageableSelectQuery_GenerateStatement_ThrowsWhenNullSort()
         {
-            ((IQueryGenerator)DapperQuery.PageableSelect("tablename", "constr"))
+            var conn = new Mock<IDbConnection>().Object;
+
+            ((IQueryGenerator)DapperQuery.PageableSelect("tablename", conn))
                 .GenerateStatement();
         }
 
@@ -62,7 +70,9 @@ AND B = @b;";
         [ExpectedException(typeof(ArgumentException))]
         public void PageableSelectQuery_SkipTake_ThrowsWhenSkipNegative()
         {
-            DapperQuery.PageableSelect(null, "constr")
+            var conn = new Mock<IDbConnection>().Object;
+
+            DapperQuery.PageableSelect(null, conn)
                 .SkipTake(-1, 0);
         }
 
@@ -70,7 +80,9 @@ AND B = @b;";
         [ExpectedException(typeof(ArgumentException))]
         public void PageableSelectQuery_SkipTake_ThrowsWhenTakeNegative()
         {
-            DapperQuery.PageableSelect(null, "constr")
+            var conn = new Mock<IDbConnection>().Object;
+
+            DapperQuery.PageableSelect(null, conn)
                 .SkipTake(0, -1);
         }
     }
