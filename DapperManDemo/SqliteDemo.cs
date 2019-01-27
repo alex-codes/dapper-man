@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.IO;
+using System.Linq;
 using System.Text;
 
 namespace DapperManDemo
@@ -155,6 +156,41 @@ namespace DapperManDemo
             Console.WriteLine();
             Console.WriteLine($"Genre with name {name} {(exists ? "does" : "does not")} exist");
             Console.WriteLine();
+        }
+
+        private void OneToMany()
+        {
+            LogTest("OneToMany");
+
+            string sql = @"
+SELECT *
+FROM Artist AR
+JOIN Album AL ON AR.ArtistId = AL.ArtistId
+ORDER BY AR.Name";
+
+            var cache = new Dictionary<int, Artist>();
+
+            Artist map(Artist artist, Album album)
+            {
+                if (!cache.TryGetValue(artist.ArtistId, out Artist a))
+                {
+                    a = artist;
+                    a.Albums = new List<Album>();
+                    cache[a.ArtistId] = a;
+                }
+
+                a.Albums.Add(album);
+                return a;
+            };
+
+            var library = DapperQuery.Create(connection)
+                .Query<Artist, Album, Artist>(sql, map, splitOn: "AlbumId")
+                .Distinct();
+
+            foreach (var artist in library)
+            {
+                Console.WriteLine(artist.ToString());
+            }
         }
 
         private void ReadAllGenres()
