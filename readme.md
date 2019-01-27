@@ -2,6 +2,26 @@
 
 A simple set of wrappers for [Dapper](https://github.com/StackExchange/Dapper) to generate small SQL statements. Similar in concept to what you'll find in Dapper.Contrib, but with a consistent API and extra features.
 
+## Version 2.0
+
+Version 2.0 includes the following breaking changes:
+
+- Conversion of the project to .Net Standard 2.0.
+- Each provider will now have its own Nuget package that depends upon the DapperMan.Core package. The Nuget structure is now:
+  - DapperMan.Core
+  - DapperMan.MsSql
+  - DapperMan.SQLite
+  - Future providers...
+- New SQLite extensions.
+- Loss of support for DapperMan.Core.Attributes on partial classes.
+- Constructors that accept an `IDbConnections` instance will no longer automatically close that connection. This allows you to reuse an existing connection. You must close and dispose the connection yourself.
+
+Other changes:
+
+- New Find and Exists query generators.
+- New ExecuteScalar method on DapperQueryBase.
+- New demo project showcasing various functionality.
+
 
 ## Select
 
@@ -222,9 +242,31 @@ int rowsAffected = DapperQuery
 ```
 
 
+## Find
+
+Use Find over Select if you only need a single value from the result set. Find returns the TOP 1 result. It does not throw an exception if there are no results, and it will not inform you if there is more than 1 row in the result set. In .Net terms, think of this as `FirstOrDefault`:
+
+```
+Department dept = DapperQuery.Find("HumanResources.Department", connection)
+    .Where("Name = @name")
+    .Execute<Department>(new { name = name });
+```
+
+
+## Exists
+
+Exists returns true if an item that matches the query exists; otherwise, false. This is a wrapper around Find; if Find returns null, Exists returns false.
+
+```
+bool result = DapperQuery.Exists("HumanResources.Department", connection)
+    .Where("Name = @name")
+    .Execute<Department>(new { name = name });
+```
+
+
 ## Stored Procedures
 
-To execute a stored procedure:
+To execute a stored procedure (MSSQL Server):
 
 ```
 (var results, int rowCount) = await DapperQuery
@@ -275,6 +317,57 @@ void mapper(SqlMapper.GridReader gridReader)
 }
 
 QueryMultiple(sql, mapper);
+```
+
+
+## One-to-Many Relationships
+
+Dapper doesn't provide any mechanism for properly handling one-to-many relationships, and neither does DapperMan. You can, however, handle the mappings yourself by keeping track of the data in a cache object. The following example is taken from the DapperManDemo project.
+
+Given the following relationships:
+```
+public class Album
+{
+    public int AlbumId { get; set; }
+    public string Title { get; set; }
+    public int ArtistId { get; set; }
+}
+
+public class Artist
+{
+    public int ArtistId { get; set; }
+    public string Name { get; set; }
+    public List<Album> Albums { get; set; }
+}
+```
+
+We can provide a function that maps the albums for each artist. This function works with a local cache dictionary. If the artist exists in the cache, add the album to the artist; otherwise, cache the artist. Calling `Distinct()` on the result set is necessary to clean up the results.
+
+```
+string sql = @"
+SELECT *
+FROM Artist AR
+JOIN Album AL ON AR.ArtistId = AL.ArtistId
+ORDER BY AR.Name";
+
+var cache = new Dictionary<int, Artist>();
+
+Artist map(Artist artist, Album album)
+{
+    if (!cache.TryGetValue(artist.ArtistId, out Artist a))
+    {
+        a = artist;
+        a.Albums = new List<Album>();
+        cache[a.ArtistId] = a;
+    }
+
+    a.Albums.Add(album);
+    return a;
+};
+
+var library = DapperQuery.Create(connection)
+    .Query<Artist, Album, Artist>(sql, map, splitOn: "AlbumId")
+    .Distinct();
 ```
 
 
